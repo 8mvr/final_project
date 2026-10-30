@@ -7,29 +7,7 @@
     font-display: swap;
 }
 
-h1 {
-  font-family: 'Playwrite TZ Guides', cursive, sans-serif;
-}
+
 body{
     background-color: #F7F4ED;
-}
-h1{
-    margin-left: 80px;
-    color: #E8EEE5;
-}
-#form{
-    background-color: #92A59C;
-    width: 25%;
-    margin: 120px auto;
-    padding: 50px;
-    box-shadow: 5px 5px 5px;
-    border-radius: 6px;
-}
-#btn{
-    color: white;
-    background-color: gray;
-    padding: 10px;
-    font-size: large;
-    box-shadow: 5px 5px 5px;
-    border-radius: 10px;
 }
