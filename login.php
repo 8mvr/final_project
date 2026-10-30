@@ -4,7 +4,7 @@ require_once "database.php";
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $email = trim($_POST["email"]);
-    $password = $_POST["password"];
+    $password = trim($_POST["password"]);
 
     $stmt = $pdo->prepare("SELECT * FROM user WHERE email = ?");
     $stmt->execute([$email]);
