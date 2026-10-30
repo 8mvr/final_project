@@ -6,14 +6,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"]);
     $password = $_POST["password"];
     $role = "user";
-
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
     $createdat = date("Y-m-d H:i:s");
 
     try{
         $stmt = $pdo->prepare("INSERT INTO user (fullname, email, password, role, createdat) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$fullname, $email, $hashed_password, $role, $createdat]);
+        $stmt->execute([$fullname, $email, $password, $role, $createdat]);
         
         echo "Registration successful! You can now login.";
     }
@@ -37,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
-    <form action="registration.php" method="POST">   
+    <form action="" method="POST">   
         <div class="container mt-5">
             <div class="row">
                 <div class="col-sm-4 offset-sm-4">
@@ -56,7 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <input class="form-control" type="email" name="email" required>
 
                     <hr class="mb-3">
-                    <input class="btn btn-primary" type="submit" name="create" value="Sign Up">
+                    <input class="btn btn-primary w-100" type="submit" name="create" value="Sign Up">
+                    <p class="mt-3 text-center">Already have an account? <a href="login.php">Log In</a></p>
                 </div>
             </div>
         </div>
