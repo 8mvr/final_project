@@ -3,7 +3,7 @@
 $db_server = "localhost";
 $db_user = "root";
 $db_pass = "maverick";
-$db_name = "Pet_Adoption";
+$db_name = "petadoptiondb";
 $conn = "";
 
 try{
