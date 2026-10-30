@@ -1,15 +1,16 @@
 <?php
 
-$db_server = "localhost";
-$db_user = "root";
-$db_pass = "maverick";
-$db_name = "petadoptiondb";
+    $host = 'localhost';
+    $dbname = 'petadoptiondb';
+    $username = 'root';
+    $password = 'maverick';
 
-try{
-    $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
-}
-catch(mysqli_sql_exception){
-    // echo"couldn't connect <br>";
-}
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+        // Set PDO error mode to exception
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die("Database connection failed: " . $e->getMessage());
+    }
 
 ?>
