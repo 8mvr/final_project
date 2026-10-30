@@ -2,32 +2,25 @@
 session_start();
 require_once "database.php";
 
-$error_message = "";
-
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $email = trim($_POST["email"]);
     $password = $_POST["password"];
 
-    try{
-        $stmt = $pdo->prepare("SELECT * FROM user WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("SELECT * FROM user WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($user && password_verify($password, $user['password'])){
+    if($user && password_verify($password, $user["password"])){
+        $_SESSION["userid"] = $user["userid"];
+        $_SESSION["fullname"] = $user["fullname"];
+        $_SESSION["email"] = $user["email"];
+        $_SESSION["role"] = $user["role"];
 
-            $_SESSION['userid'] = $user['userid'];
-            $_SESSION['fullname'] = $user['fullname'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['role'] = $user['role'];
-
-            header("Location: dashboard.php");
-            exit();
-        }
-        else{
-            $error_message = "Invalid email or password.";
-        }
-    }catch(PDOException $e){
-        $error_message = "Error: " . $e->getMessage();
+        header("Location: .php");
+        exit();
+    }
+    else{
+        echo "Invalid email or password.";
     }
 }
 ?>

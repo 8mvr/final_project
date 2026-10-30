@@ -4,14 +4,16 @@ require_once "database.php";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $fullname = trim($_POST["fullname"]);
     $email = trim($_POST["email"]);
-    $password = $_POST["password"];
+    $password = trim($_POST["password"]);
     $role = "user";
+
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    $createdat = date("Y-m-d H:i:s");
+    $createdat = date("Y-m-d H:m:s");
 
     try{
         $stmt = $pdo->prepare("INSERT INTO user (fullname, email, password, role, createdat) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$fullname, $email, $password, $role, $createdat]);
+        $stmt->execute([$fullname, $email, $hashed_password, $role, $createdat]);
         
         echo "Registration successful! You can now login.";
     }
