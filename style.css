@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Playwrite TZ Guides';
+    src: url('fonts/PlaywriteTZGuides-Regular.woff2') format('woff2'),
+         url('fonts/PlaywriteTZGuides-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+h1 {
+  font-family: 'Playwrite TZ Guides', cursive, sans-serif;
+}
+
+
+body{
+    background-color: #F7F4ED;
+}
+h1{
+    margin-left: 80px;
+    color: #E8EEE5;
+}
+#form{
+    background-color: #92A59C;
+    width: 25%;
+    margin: 120px auto;
+    padding: 50px;
+    box-shadow: 5px 5px 5px;
+}
+#btn{
+    background-color: gray;
+}
