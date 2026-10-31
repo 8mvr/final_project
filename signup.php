@@ -1,5 +1,5 @@
 <?php
-require_once "database.php";
+require_once "app/database.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $fullname = trim($_POST["fullname"]);
