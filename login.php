@@ -12,11 +12,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     if($user && password_verify($password, $user["password"])){
         $_SESSION["userid"] = $user["userid"];
-        $_SESSION["fullname"] = $user["fullname"];
+        $_SESSION["full_name"] = $user["full_name"];
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
 
-        header("Location: .php");
+        header("Location: index.php");
         exit();
     }
     else{

@@ -2,18 +2,18 @@
 require_once "app/database.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $fullname = trim($_POST["fullname"]);
+    $full_name = trim($_POST["full_name"]);
     $email = trim($_POST["email"]);
     $password = trim($_POST["password"]);
     $role = "user";
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    $createdat = date("Y-m-d H:i:s");
+    $created_at = date("Y-m-d H:i:s");
 
     try{
-        $stmt = $pdo->prepare("INSERT INTO user (fullname, email, password, role, createdat) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$fullname, $email, $hashed_password, $role, $createdat]);
+        $stmt = $pdo->prepare("INSERT INTO user (full_name, email, password, role, created_at) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$full_name, $email, $hashed_password, $role, $created_at]);
         
         echo "Registration successful! You can now login.";
     }
@@ -41,17 +41,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <h1>SIGN UP</h1>
             <p>Fill up the form</p>
 
-            <label for="fullname"><b>Full Name</b></label>
+            <label for="full_name"><b>Full Name</b></label>
             <p>First Name and Last Name</p>
-            <input name="fullname" required>
+            <input type="text" name="full_name" required>
 
             <label for="email"><b>Email Address</b></label>
             <input type="email" name="email" required>
 
             <label for="password"><b>Password</b></label>
             <input type="password" name="password" required>
-            <label for="password"><b>Password</b></label>
-            <input type="password" name="password" required>
+            <!-- <label for="password"><b>Password</b></label>
+            <input type="password" name="password" required> -->
 
             <input type="submit" name="create" value="Create Account">
             <p class="login-link">Already have an account? <a href="login.php">Log In</a></p>
