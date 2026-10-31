@@ -45,11 +45,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <p>First Name and Last Name</p>
             <input name="fullname" required>
 
-            <label for="password"><b>Password</b></label>
-            <input type="password" name="password" required>
-
             <label for="email"><b>Email Address</b></label>
             <input type="email" name="email" required>
+
+            <label for="password"><b>Password</b></label>
+            <input type="password" name="password" required>
+            <label for="password"><b>Password</b></label>
+            <input type="password" name="password" required>
 
             <input type="submit" name="create" value="Create Account">
             <p class="login-link">Already have an account? <a href="login.php">Log In</a></p>
