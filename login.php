@@ -36,10 +36,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 <body>
     <form action="login.php" method="POST">   
         <div class="login-container">
-            <h1>Login</h1>
+            <h1>WELCOME</h1>
             <p>Enter your credentials</p>
-
-            <hr>
 
             <?php if (!empty($error_message)): ?>
                 <div class="error-message">
@@ -53,7 +51,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             <label for="password"><b>Password</b></label>
             <input type="password" name="password" required>
 
-            <hr>
             <input type="submit" name="login" value="Log In">
             
             <p class="signup-link">Don't have an account? <a href="signup.php">Sign Up</a></p>

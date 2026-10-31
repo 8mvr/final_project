@@ -38,10 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
     <form action="signup.php" method="POST">   
         <div class="signup-container">
-            <h1>Registration</h1>
+            <h1>SIGN UP</h1>
             <p>Fill up the form</p>
 
-            <hr>
             <label for="fullname"><b>Full Name</b></label>
             <p>First Name and Last Name</p>
             <input name="fullname" required>
@@ -52,8 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <label for="email"><b>Email Address</b></label>
             <input type="email" name="email" required>
 
-            <hr>
-            <input type="submit" name="create" value="Sign Up">
+            <input type="submit" name="create" value="Create Account">
             <p class="login-link">Already have an account? <a href="login.php">Log In</a></p>
         </div>
     </form>
