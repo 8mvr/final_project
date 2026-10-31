@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
-    $createdat = date("Y-m-d H:m:s");
+    $createdat = date("Y-m-d H:i:s");
 
     try{
         $stmt = $pdo->prepare("INSERT INTO user (fullname, email, password, role, createdat) VALUES (?, ?, ?, ?, ?)");
@@ -20,8 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     catch(PDOException $e){
         if($e->getCode() == 23000){
             echo "Error: Email is already registered.";
-        }
-        else{
+        }else{
             echo "Error: " . $e->getMessage();
         }
     }
@@ -34,32 +33,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form action="" method="POST">   
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-sm-4 offset-sm-4">
-                    <h1>Registration</h1>
-                    <p>Fill up the form</p>
+    <form action="signup.php" method="POST">   
+        <div class="signup-container">
+            <h1>Registration</h1>
+            <p>Fill up the form</p>
 
-                    <hr class="mb-3">
-                    <label for="fullname"><b>Full Name</b></label>
-                    <p>First Name and Last Name</p>
-                    <input class="form-control" name="fullname" required>
+            <hr>
+            <label for="fullname"><b>Full Name</b></label>
+            <p>First Name and Last Name</p>
+            <input name="fullname" required>
 
-                    <label for="password"><b>Password</b></label>
-                    <input class="form-control" type="password" name="password" required>
+            <label for="password"><b>Password</b></label>
+            <input type="password" name="password" required>
 
-                    <label for="email"><b>Email Address</b></label>
-                    <input class="form-control" type="email" name="email" required>
+            <label for="email"><b>Email Address</b></label>
+            <input type="email" name="email" required>
 
-                    <hr class="mb-3">
-                    <input class="btn btn-primary w-100" type="submit" name="create" value="Sign Up">
-                    <p class="mt-3 text-center">Already have an account? <a href="login.php">Log In</a></p>
-                </div>
-            </div>
+            <hr>
+            <input type="submit" name="create" value="Sign Up">
+            <p class="login-link">Already have an account? <a href="login.php">Log In</a></p>
         </div>
     </form>
 </body>
