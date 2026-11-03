@@ -1,28 +1,28 @@
 <?php
-session_start();
-require_once "app/database.php";
+// session_start();
+// require_once "app/database.php";
 
-if($_SERVER["REQUEST_METHOD"] === "POST"){
-    $email = trim($_POST["email"]);
-    $password = trim($_POST["password"]);
+// if($_SERVER["REQUEST_METHOD"] === "POST"){
+//     $email = trim($_POST["email"]);
+//     $password = $_POST["password"];
 
-    $stmt = $pdo->prepare("SELECT * FROM user WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+//     $stmt = $pdo->prepare("SELECT * FROM user WHERE email = ?");
+//     $stmt->execute([$email]);
+//     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($user && password_verify($password, $user["password"])){
-        $_SESSION["userid"] = $user["userid"];
-        $_SESSION["full_name"] = $user["full_name"];
-        $_SESSION["email"] = $user["email"];
-        $_SESSION["role"] = $user["role"];
+//     if($user && password_verify($password, $user["password"])){
+//         $_SESSION["userid"] = $user["userid"];
+//         $_SESSION["full_name"] = $user["full_name"];
+//         $_SESSION["email"] = $user["email"];
+//         $_SESSION["role"] = $user["role"];
 
-        header("Location: index.php");
-        exit();
-    }
-    else{
-        echo "Invalid email or password.";
-    }
-}
+//         header("Location: index.php");
+//         exit();
+//     }
+//     else{
+//         echo "Invalid email or password.";
+//     }
+// }
 ?>
 
 <!DOCTYPE html>

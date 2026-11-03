@@ -1,9 +1,7 @@
 {
-  "name": "oop/week9-composer-example",
-  "description": "Composer PSR-4 authentication example",
   "autoload": {
     "psr-4": {
-      "App\\": "app/"
+      "app\\": "app/"
     }
   }
 }

@@ -1,16 +1,20 @@
 <?php
 
-$host = "localhost";
-$dbname = "petadoptiondb";
-$username = "root";
-$password = "maverick";
+namespace app;
 
-try{
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-catch(PDOException $e){
-    die("Database connection failed: " . $e->getMessage());
+use PDO;
+
+class Database{
+    private $host = "localhost";
+    private $username = "root";
+    private $password = "maverick";
+    private $dbname = "petadoptiondb";
+
+    public function connection():PDO{
+        return new PDO("mysql:host=$this->host;dbname=$this->dbname",$this->username,$this->password,[
+        PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION
+        ]);
+    }
 }
 
 ?>

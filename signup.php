@@ -1,30 +1,19 @@
 <?php
-require_once "app/database.php";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $full_name = trim($_POST["full_name"]);
-    $email = trim($_POST["email"]);
-    $password = trim($_POST["password"]);
-    $role = "user";
+require_once __DIR__."/vendor/autoload.php";
+use app\Models\Authentication;
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    
-    $created_at = date("Y-m-d H:i:s");
+if(isset($_POST["submit"])){
+    $full_name=$_POST["full_name"];
+    $email=$_POST["email"];
+    $password=$_POST["password"];
+    // $role=$_POST["role"];
+    // $created_at = date("Y-m-d H:i:s");
 
-    try{
-        $stmt = $pdo->prepare("INSERT INTO user (full_name, email, password, role, created_at) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$full_name, $email, $hashed_password, $role, $created_at]);
-        
-        echo "Registration successful! You can now login.";
-    }
-    catch(PDOException $e){
-        if($e->getCode() == 23000){
-            echo "Error: Email is already registered.";
-        }else{
-            echo "Error: " . $e->getMessage();
-        }
-    }
+    $auth=new Authentication();
+    $auth->signup($full_name, $email, $password);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -50,10 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <label for="password"><b>Password</b></label>
             <input type="password" name="password" required>
-            <!-- <label for="password"><b>Password</b></label>
-            <input type="password" name="password" required> -->
 
-            <input type="submit" name="create" value="Create Account">
+            <input type="submit" name="submit" value="Create Account">
             <p class="login-link">Already have an account? <a href="login.php">Log In</a></p>
         </div>
     </form>
