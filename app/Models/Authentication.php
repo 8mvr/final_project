@@ -21,6 +21,20 @@ class Authentication{
         return "Success";
     }
 
+    public function login($email, $password){
+        $sql="SELECT * FROM user where email=?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute([$email]);
+        $user=$stmt->fetch();
+
+        if($email==$user["email"] && password_verify($password, $user["password"])){
+            return "Login Successful";
+        }
+        else{
+            return "Invalid Credentials";
+        }
+    }
+
 }
 
 ?>

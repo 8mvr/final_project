@@ -1,28 +1,21 @@
 <?php
-// session_start();
-// require_once "app/database.php";
 
-// if($_SERVER["REQUEST_METHOD"] === "POST"){
-//     $email = trim($_POST["email"]);
-//     $password = $_POST["password"];
+session_start();
+require_once __DIR__."/vendor/autoload.php";
+use app\Models\Authentication;
 
-//     $stmt = $pdo->prepare("SELECT * FROM user WHERE email = ?");
-//     $stmt->execute([$email]);
-//     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+$message="";
+if(isset($_POST["submit"])){
+    $email=$_POST["email"];
+    $password=$_POST["password"];
 
-//     if($user && password_verify($password, $user["password"])){
-//         $_SESSION["userid"] = $user["userid"];
-//         $_SESSION["full_name"] = $user["full_name"];
-//         $_SESSION["email"] = $user["email"];
-//         $_SESSION["role"] = $user["role"];
+    $auth=new Authentication();
+    $message=$auth->login($email, $password);
+    if($message=="Login Successful"){
+        header("Location:./userDashboard/dashboard.php");
+    }
+}
 
-//         header("Location: index.php");
-//         exit();
-//     }
-//     else{
-//         echo "Invalid email or password.";
-//     }
-// }
 ?>
 
 <!DOCTYPE html>
@@ -36,14 +29,8 @@
 <body>
     <form action="login.php" method="POST">   
         <div class="login-container">
-            <h1>WELCOME</h1>
-            <p>Enter your credentials</p>
-
-            <?php if (!empty($error_message)): ?>
-                <div class="error-message">
-                    <?php echo htmlspecialchars($error_message); ?>
-                </div>
-            <?php endif; ?>
+            <h1>LOGIN</h1>
+            <p>Enter your Credentials</p>
 
             <label for="email"><b>Email Address</b></label>
             <input type="email" name="email" required>
@@ -51,9 +38,16 @@
             <label for="password"><b>Password</b></label>
             <input type="password" name="password" required>
 
-            <input type="submit" name="login" value="Log In">
-            
-            <p class="signup-link">Don't have an account? <a href="signup.php">Sign Up</a></p>
+            <input type="submit" name="submit" value="LogIn">
+            <p class="signup-link">Don't have an account? <a href="signup.php">SignUp</a></p>
+
+            <?php
+
+            if($message!==""){
+                echo"<p>$message</p>";
+            }
+
+            ?>
         </div>
     </form>
 </body>

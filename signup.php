@@ -3,6 +3,7 @@
 require_once __DIR__."/vendor/autoload.php";
 use app\Models\Authentication;
 
+$message="";
 if(isset($_POST["submit"])){
     $full_name=$_POST["full_name"];
     $email=$_POST["email"];
@@ -11,7 +12,7 @@ if(isset($_POST["submit"])){
     // $created_at = date("Y-m-d H:i:s");
 
     $auth=new Authentication();
-    $auth->signup($full_name, $email, $password);
+    $message=$auth->signup($full_name, $email, $password);
 }
 
 ?>
@@ -41,7 +42,15 @@ if(isset($_POST["submit"])){
             <input type="password" name="password" required>
 
             <input type="submit" name="submit" value="Create Account">
-            <p class="login-link">Already have an account? <a href="login.php">Log In</a></p>
+            <p class="login-link">Already have an account? <a href="login.php">Login</a></p>
+
+            <?php
+
+            if($message!==""){
+                echo"<p>$message</p>";
+            }
+
+            ?>
         </div>
     </form>
 </body>
