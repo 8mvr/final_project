@@ -8,8 +8,6 @@ if(isset($_POST["submit"])){
     $full_name=$_POST["full_name"];
     $email=$_POST["email"];
     $password=$_POST["password"];
-    // $role=$_POST["role"];
-    // $created_at = date("Y-m-d H:i:s");
 
     $auth=new Authentication();
     $message=$auth->signup($full_name, $email, $password);
