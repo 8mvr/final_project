@@ -42,7 +42,7 @@ catch(PDOException $e){
             <th>Description</th>
             <th>Photo URL</th>
             <th>Status</th>
-            <th>Created By</th>
+            <!-- <th>Created By</th> -->
             <th>Actions</th>
         </tr>
 
@@ -66,7 +66,7 @@ catch(PDOException $e){
             <td><?php echo $pet["description"] ?></td>
             <td><?php echo $pet["photo_url"] ?></td>
             <td><?php echo $pet["status"] ?></td>
-            <td><?php echo $pet["creator_name"]?></td>
+            <!-- <td><?php echo $pet["creator_name"]?></td> -->
             <td>
                 <a href="viewbyid.php">View</a>
                 <a href="" onclick="return confirm('Are you sure?')">Delete</a>
