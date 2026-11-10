@@ -18,10 +18,10 @@ class Pet{
         $pet=$stmt->fetchAll(PDO::FETCH_ASSOC);
         return $pet;
     }
-    public function insert($created_by, $name, $species, $breed, $age, $sex, $description, $photo_url, $status){
+    public function insert($creatorEmail, $name, $species, $breed, $age, $sex, $description, $photo_url, $status){
         $sql="INSERT INTO pet(created_by,name,species,breed,age,sex,description,photo_url,status) SELECT userid,?,?,?,?,?,?,?,? FROM user WHERE email=?";
         $stmt=$this->conn->prepare($sql);
-        $stmt->execute([$name,$species,$breed,$age,$sex,$description,$photo_url,$status,$created_by]);
+        $stmt->execute([$name,$species,$breed,$age,$sex,$description,$photo_url,$status,$creatorEmail]);
         if($stmt->rowCount()===0){
             return "Creator account not found";
         }
