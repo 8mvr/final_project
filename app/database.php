@@ -7,7 +7,7 @@ use PDO;
 class Database{
     private $host = "localhost";
     private $username = "root";
-    private $password = "maverick";
+    private $password = "";
     private $dbname = "petadoptiondb";
 
     public function connection():PDO{
