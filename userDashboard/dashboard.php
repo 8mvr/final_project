@@ -31,7 +31,9 @@ catch(PDOException $e){
 <body>
     Hello <?php echo $_SESSION["email"]; ?>
     <br>
+    <?php if($_SESSION["role"]==="admin"){ ?>
     <a href="addpet.php">Add pet</a>
+    <?php } ?>
     <table border="1">
         <tr>
             <th>Name</th>
@@ -67,7 +69,9 @@ catch(PDOException $e){
             <td><?php echo $pet["status"] ?></td>
             <td>
                 <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
-                <a href="delete.php?id=<?php echo $pet["petid"] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+                <?php if($_SESSION["role"]==="admin"){ ?>
+                    <a href="delete.php?id=<?php echo $pet["petid"] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+                <?php } ?>
             </td>
         </tr>
         <?php }} ?>

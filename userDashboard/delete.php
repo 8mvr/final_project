@@ -2,6 +2,10 @@
 
 session_start();
 
+if($_SESSION["role"]!=="admin"){
+    header("Location:dashboard.php");
+    exit();
+}
 if(!isset($_SESSION["email"])){
     header("Location:../logout.php");
     exit();
@@ -14,7 +18,7 @@ $petModel=new Pet();
 $id=$_GET["id"];
 if(isset($_GET["id"])){
     try{
-        echo $petModel->delete($id);
+        $petModel->delete($id);
         header("Location:dashboard.php");
     }
     catch(PDOException $e){

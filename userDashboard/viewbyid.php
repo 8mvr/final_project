@@ -32,16 +32,20 @@ if(isset($_GET["id"])){
 <body>
     <h1>Update Pet</h1>
     <form action="update.php" method="POST">
-        <input type="hidden" name="id" value="<?php echo $pet["petid"] ?>">
-        Pet Name: <input type="text" name="name" value="<?php echo $pet["name"] ?>"><br>
-        Species: <input type="text" name="species" value="<?php echo $pet["species"] ?>"><br>
-        Breed: <input type="text" name="breed" value="<?php echo $pet["breed"] ?>"><br>
-        Age: <input type="number" name="age" value="<?php echo $pet["age"] ?>"><br>
-        Sex: <input type="text" name="sex" value="<?php echo $pet["sex"] ?>"><br>
-        Description: <input type="text" name="description" value="<?php echo $pet["description"] ?>"><br>
-        Photo_url: <input type="text" name="photo_url" value="<?php echo $pet["photo_url"] ?>"><br>
-        Status: <input type="text" name="status" value="<?php echo $pet["status"] ?>"><br>
-        <input type="submit" value="Update" name="update">
+        <fieldset <?php if($_SESSION["role"]!=="admin") echo "disabled"; ?> style="border:0;padding:0">
+            <input type="hidden" name="id" value="<?php echo $pet["petid"] ?>">
+            Pet Name: <input type="text" name="name" value="<?php echo $pet["name"] ?>"><br>
+            Species: <input type="text" name="species" value="<?php echo $pet["species"] ?>"><br>
+            Breed: <input type="text" name="breed" value="<?php echo $pet["breed"] ?>"><br>
+            Age: <input type="number" name="age" value="<?php echo $pet["age"] ?>"><br>
+            Sex: <input type="text" name="sex" value="<?php echo $pet["sex"] ?>"><br>
+            Description: <input type="text" name="description" value="<?php echo $pet["description"] ?>"><br>
+            Photo_url: <input type="text" name="photo_url" value="<?php echo $pet["photo_url"] ?>"><br>
+            Status: <input type="text" name="status" value="<?php echo $pet["status"] ?>"><br>
+            <?php if($_SESSION["role"]==="admin"){ ?>
+                <input type="submit" value="Update" name="update">
+            <?php } ?>
+        </fieldset>
     </form>
 </body>
 </html>

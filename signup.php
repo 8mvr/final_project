@@ -8,9 +8,14 @@ if(isset($_POST["submit"])){
     $full_name=$_POST["full_name"];
     $email=$_POST["email"];
     $password=$_POST["password"];
+    $confirm_password=$_POST["confirm_password"]; // NEW
 
-    $auth=new Authentication();
-    $message=$auth->signup($full_name, $email, $password);
+    if($password!==$confirm_password){            // NEW
+        $message="Passwords do not match";        // NEW
+    }else{                                        // NEW
+        $auth=new Authentication();
+        $message=$auth->signup($full_name, $email, $password);
+    }                                             // NEW
 }
 
 ?>
@@ -38,6 +43,9 @@ if(isset($_POST["submit"])){
 
             <label for="password"><b>Password</b></label>
             <input type="password" name="password" required>
+
+            <label for="confirm_password"><b>Confirm Password</b></label>
+            <input type="password" name="confirm_password" required>
 
             <input type="submit" name="submit" value="Create Account">
             <p class="login-link">Already have an account? <a href="login.php">Login</a></p>

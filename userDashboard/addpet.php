@@ -2,6 +2,10 @@
 
 session_start();
 
+if($_SESSION["role"]!=="admin"){
+    header("Location:dashboard.php");
+    exit();
+}
 if(!isset($_SESSION["email"])){
     header("Location:../logout.php");
     exit();
@@ -22,7 +26,7 @@ if(isset($_POST["submit"])){
     $status=$_POST["status"];
 
     try{
-        echo $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
+        $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
         header("Location:dashboard.php");
     }
     catch(PDOException $e){

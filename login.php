@@ -12,8 +12,10 @@ if(isset($_POST["submit"])){
     $auth=new Authentication();
     $message=$auth->login($email, $password);
     if($message=="Login Successful"){
-        header("Location:./userDashboard/dashboard.php");
         $_SESSION["email"]=$email;
+        $_SESSION["role"]=$auth->getRole($email);
+        header("Location:./userDashboard/dashboard.php");
+        exit();
     }
 }
 

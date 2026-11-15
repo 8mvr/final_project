@@ -2,6 +2,10 @@
 
 session_start();
 
+if($_SESSION["role"]!=="admin"){
+    header("Location:dashboard.php");
+    exit();
+}
 if(!isset($_SESSION["email"])){
     header("Location:../logout.php");
     exit();
@@ -23,7 +27,7 @@ if(isset($_POST["update"])){
     $status=$_POST["status"];
 
     try{
-        echo $petModel->update($name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id);
+        $petModel->update($name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id);
         header("Location:dashboard.php");
     }
     catch(PDOException $e){
