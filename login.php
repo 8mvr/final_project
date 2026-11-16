@@ -1,4 +1,5 @@
 <?php
+// comment
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/vendor/autoload.php';
 use app\Models\Authentication;
@@ -15,7 +16,12 @@ if (isset($_POST["submit"])) {
     $message = $auth->login($email, $password, $selectedRole);
 
     if ($message === "Login Successful") {
-        if ($selectedRole === "staff" || (isset($_SESSION["role"]) && $_SESSION["role"] === "staff")) {
+        $_SESSION["email"] = $email;
+        $userRole = $auth->getRole($email);
+        if ($userRole) {
+            $_SESSION["role"] = $userRole;
+        }
+        if ($selectedRole === "staff" || (isset($_SESSION["role"]) && ($_SESSION["role"] === "staff" || $_SESSION["role"] === "admin"))) {
             header("Location: userDashboard/dashboard.php");
         } else {
             header("Location: index.php");

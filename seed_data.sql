@@ -1,3 +1,4 @@
+-- comment
 -- Seed Data matching the Figma "Hearth" Pet Adoption design system
 USE `petadoptiondb`;
 

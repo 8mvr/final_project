@@ -1,4 +1,5 @@
 <?php
+// comment
 require_once __DIR__ . '/session.php';
 $currentPage = basename($_SERVER['PHP_SELF'] ?? 'index.php');
 ?>

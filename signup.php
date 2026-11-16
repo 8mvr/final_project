@@ -1,4 +1,5 @@
 <?php
+// comment
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/vendor/autoload.php';
 use app\Models\Authentication;
@@ -9,7 +10,7 @@ $error = "";
 if (isset($_POST["submit"])) {
     $first_name = trim($_POST["first_name"] ?? "");
     $last_name = trim($_POST["last_name"] ?? "");
-    $full_name = trim($first_name . " " . $last_name);
+    $full_name = trim($_POST["full_name"] ?? ($first_name . " " . $last_name));
     $email = trim($_POST["email"] ?? "");
     $phone = trim($_POST["phone"] ?? "");
     $password = $_POST["password"] ?? "";
@@ -23,7 +24,7 @@ if (isset($_POST["submit"])) {
         $auth = new Authentication();
         $res = $auth->signup($full_name, $email, $password, $phone);
         if ($res === "Success") {
-            header("Location: index.php");
+            header("Location: login.php");
             exit();
         } else {
             $error = $res;

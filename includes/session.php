@@ -1,4 +1,5 @@
 <?php
+// comment
 // Unified session initializer
 if (session_status() === PHP_SESSION_NONE) {
     $sessDir = __DIR__ . '/../sessions';

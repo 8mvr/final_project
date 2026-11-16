@@ -1,4 +1,5 @@
 <?php
+// comment
 
 namespace app\Models;
 
@@ -19,16 +20,15 @@ class Authentication {
     }
 
     public function signup($full_name, $email, $password, $phone = "") {
-        $hashPassword = password_hash($password, PASSWORD_DEFAULT);
-        
         if ($this->conn) {
             try {
-                $check = $this->conn->prepare("SELECT email FROM user WHERE email = ?");
+                $check = $this->conn->prepare("SELECT userid FROM user WHERE email = ?");
                 $check->execute([$email]);
                 if ($check->fetch()) {
-                    return "Email address is already registered.";
+                    return "Email is already registered";
                 }
 
+                $hashPassword = password_hash($password, PASSWORD_DEFAULT);
                 $sql = "INSERT INTO user(full_name, email, password, role) VALUES(?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute([$full_name, $email, $hashPassword, "user"]);
@@ -55,9 +55,9 @@ class Authentication {
 
                 if ($user && password_verify($password, $user["password"])) {
                     $_SESSION["email"] = $user["email"];
-                    $_SESSION["full_name"] = $user["full_name"];
+                    $_SESSION["full_name"] = $user["full_name"] ?? $email;
                     $_SESSION["role"] = $user["role"] ?? "user";
-                    $_SESSION["userid"] = $user["userid"];
+                    $_SESSION["userid"] = $user["userid"] ?? 1;
                     return "Login Successful";
                 } else {
                     return "That email and password don’t match. Please check and try again.";
@@ -77,5 +77,18 @@ class Authentication {
         }
 
         return "That email and password don’t match. Please check and try again.";
+    }
+
+    public function getRole($email) {
+        if ($this->conn) {
+            try {
+                $stmt = $this->conn->prepare("SELECT role FROM user WHERE email = ?");
+                $stmt->execute([$email]);
+                return $stmt->fetchColumn();
+            } catch (Exception $e) {
+                return null;
+            }
+        }
+        return $_SESSION["role"] ?? "user";
     }
 }

@@ -1,3 +1,4 @@
+<!-- comment -->
     <footer class="hearth-footer">
         <div class="footer-top">
             <div class="footer-brand">
