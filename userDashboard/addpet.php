@@ -59,7 +59,10 @@ if(isset($_POST["submit"])){
         </select><br>
         Description: <input type="text" name="description"><br>
         Photo_url: <input type="text" name="photo_url"><br>
-        Status: <input type="text" name="status"><br>
+        Status: <select name="status">
+            <option value="available">Available</option>
+            <option value="foster">Foster</option>
+        </select><br>
         <input type="submit" value="Add" name="submit">
     </form>
 </body>
