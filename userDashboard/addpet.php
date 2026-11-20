@@ -27,6 +27,7 @@ if(isset($_POST["submit"])){
     $status=$_POST["status"];
 
     try{
+        $photo_url=Upload::save($_FILES["photo"]) ?? "";
         $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
 
         header("Location:dashboard.php");
@@ -57,12 +58,8 @@ if(isset($_POST["submit"])){
             <option value="Female">Female</option>
         </select><br>
         Description: <input type="text" name="description"><br>
-        Photo: <input type="file" name="photo" accept="image/*"><br>
-        Status: <select name="status">
-            <option value="available">Available</option>
-            <option value="adopted">Adopted</option>
-            <option value="fostered">Fostered</option>
-        </select><br>
+        Photo_url: <input type="text" name="photo_url"><br>
+        Status: <input type="text" name="status"><br>
         <input type="submit" value="Add" name="submit">
     </form>
 </body>

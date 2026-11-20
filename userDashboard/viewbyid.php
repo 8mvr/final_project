@@ -43,15 +43,8 @@ if (isset($id)) {
                 <option value="Female" <?php if($pet["sex"]==="Female") echo "selected"; ?>>Female</option>
             </select><br>
             Description: <input type="text" name="description" value="<?php echo $pet["description"] ?>"><br>
-            <?php if($pet["photo_url"]){ ?>
-                <img src="Images/<?php echo htmlspecialchars($pet["photo_url"]) ?>" width="120" alt=""><br>
-            <?php } ?>
-            Photo: <input type="file" name="photo" accept="image/*"><br>
-            Status: <select name="status">
-                <?php foreach(["available","adopted","fostered"] as $s){ ?>
-                    <option value="<?php echo $s ?>" <?php if($pet["status"]===$s) echo "selected"; ?>><?php echo ucfirst($s) ?></option>
-                <?php } ?>
-            </select><br>
+            Photo_url: <input type="text" name="photo_url" value="<?php echo $pet["photo_url"] ?>"><br>
+            Status: <input type="text" name="status" value="<?php echo $pet["status"] ?>"><br>
             <?php if($_SESSION["role"]==="admin"){ ?>
                 <input type="submit" value="Update" name="update">
             <?php } ?>
