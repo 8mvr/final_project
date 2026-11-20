@@ -14,7 +14,10 @@ if ($_SESSION["role"] !== "admin") {
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use app\Models\Pet;
+<<<<<<< HEAD
 use app\Upload;
+=======
+>>>>>>> parent of 253de8d (added photo)
 
 $error = "";
 $values = [
@@ -27,6 +30,7 @@ $values = [
     "status" => ""
 ];
 
+<<<<<<< HEAD
 if (isset($_POST["submit"])) {
     foreach ($values as $field => $_) {
         $values[$field] = trim((string) ($_POST[$field] ?? ""));
@@ -50,6 +54,14 @@ if (isset($_POST["submit"])) {
         exit();
     } catch (Exception $e) {
         $error = $e->getMessage();
+=======
+    try{
+        $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
+        header("Location:dashboard.php");
+    }
+    catch(PDOException $e){
+        echo $e->getMessage();
+>>>>>>> parent of 253de8d (added photo)
     }
 }
 
@@ -67,6 +79,7 @@ $escape = static function ($value): string {
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="addpet.css">
 </head>
+<<<<<<< HEAD
 <body class="dashboard-page" id="top">
     <header class="site-header">
         <div class="header-inner">
@@ -155,5 +168,20 @@ $escape = static function ($value): string {
             <a href="../logout.php">Log out</a>
         </div>
     </footer>
+=======
+<body>
+    <h1>Add Pet</h1>
+    <form method="POST">
+        Pet Name: <input type="text" name="name"><br>
+        Species: <input type="text" name="species"><br>
+        Breed: <input type="text" name="breed"><br>
+        Age: <input type="number" name="age"><br>
+        Sex: <input type="text" name="sex"><br>
+        Description: <input type="text" name="description"><br>
+        Photo_url: <input type="text" name="photo_url"><br>
+        Status: <input type="text" name="status"><br>
+        <input type="submit" value="Add" name="submit">
+    </form>
+>>>>>>> parent of 253de8d (added photo)
 </body>
 </html>

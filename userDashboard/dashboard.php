@@ -59,6 +59,7 @@ sort($statuses, SORT_NATURAL | SORT_FLAG_CASE);
                 }
             }
         ?>
+<<<<<<< HEAD
         <section class="hero" aria-labelledby="page-title">
             <div class="hero-copy">
                 <p class="eyebrow">Find a companion</p>
@@ -71,6 +72,27 @@ sort($statuses, SORT_NATURAL | SORT_FLAG_CASE);
                     <img src="Images/<?= $escape($heroPet["photo_url"]) ?>" alt="<?= $escape($heroPet["name"] ?? "Pet available for adoption") ?>">
                 <?php } else { ?>
                     <span>No Photo</span>
+=======
+        <tr>
+            <td colspan="10">No available Pet.</td>
+        </tr>
+        <?php }else{
+            foreach($pets as $pet){
+        ?>
+        <tr>
+            <td><?php echo $pet["name"] ?></td>
+            <td><?php echo $pet["species"] ?></td>
+            <td><?php echo $pet["breed"] ?></td>
+            <td><?php echo $pet["age"] ?></td>
+            <td><?php echo $pet["sex"] ?></td>
+            <td><?php echo $pet["description"] ?></td>
+            <td><?php echo $pet["photo_url"] ?></td>
+            <td><?php echo $pet["status"] ?></td>
+            <td>
+                <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
+                <?php if($_SESSION["role"]==="admin"){ ?>
+                    <a href="delete.php?id=<?php echo $pet["petid"] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+>>>>>>> parent of 253de8d (added photo)
                 <?php } ?>
             </div>
         </section>
