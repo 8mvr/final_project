@@ -23,9 +23,6 @@ if(isset($_POST["submit"])){
     $status=$_POST["status"];
 
     try{
-        echo $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
-
-        $photo_url=Upload::save($_FILES["photo"]) ?? "";
         $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
 
         header("Location:dashboard.php");
