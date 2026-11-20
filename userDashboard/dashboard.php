@@ -8,6 +8,7 @@ if(!isset($_SESSION["email"])){
 }
 
 require_once __DIR__."/../vendor/autoload.php";
+require_once __DIR__."/upload_photo.php";
 use app\Models\Pet;
 
 $petModel=new Pet();
@@ -42,7 +43,7 @@ catch(PDOException $e){
             <th>Age</th>
             <th>Sex</th>
             <th>Description</th>
-            <th>Photo URL</th>
+            <th>Photo</th>
             <th>Status</th>
             <!-- <th>Created By</th> -->
             <th>Actions</th>
@@ -66,12 +67,21 @@ catch(PDOException $e){
             <td><?php echo $pet["age"] ?></td>
             <td><?php echo $pet["sex"] ?></td>
             <td><?php echo $pet["description"] ?></td>
-            <td><?php echo $pet["photo_url"] ?></td>
+            <td>
+                <?php $src = photo_src($pet["photo_url"]); ?>
+                <?php if($src){ ?>
+                    <img src="<?php echo htmlspecialchars($src) ?>" alt="<?php echo htmlspecialchars($pet["name"]) ?>" width="100" style="height:100px;object-fit:cover;">
+                <?php }else{ ?>
+                    No photo
+                <?php } ?>
+            </td>
             <td><?php echo $pet["status"] ?></td>
             <td>
-                <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
                 <?php if($_SESSION["role"]==="admin"){ ?>
+                    <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">Edit</a>
                     <a href="delete.php?id=<?php echo $pet["petid"] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+                <?php }else{ ?>
+                    <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
                 <?php } ?>
             </td>
         </tr>

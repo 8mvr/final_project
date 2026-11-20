@@ -12,6 +12,7 @@ if($_SESSION["role"]!=="admin"){
 }
 
 require_once __DIR__."/../vendor/autoload.php";
+require_once __DIR__."/upload_photo.php";
 use app\Models\Pet;
 
 $petModel=new Pet();
@@ -22,15 +23,15 @@ if(isset($_POST["submit"])){
     $age=$_POST["age"];
     $sex=$_POST["sex"];
     $description=$_POST["description"];
-    $photo_url=$_POST["photo_url"];
     $status=$_POST["status"];
 
     try{
+        $photo_url=save_uploaded_photo() ?? "";
         $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
 
         header("Location:dashboard.php");
     }
-    catch(PDOException $e){
+    catch(PDOException | RuntimeException $e){
         echo $e->getMessage();
     }
 }
@@ -45,7 +46,7 @@ if(isset($_POST["submit"])){
 </head>
 <body>
     <h1>Add Pet</h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         Pet Name: <input type="text" name="name"><br>
         Species: <input type="text" name="species"><br>
         Breed: <input type="text" name="breed"><br>
@@ -55,15 +56,11 @@ if(isset($_POST["submit"])){
             <option value="Female">Female</option>
         </select><br>
         Description: <input type="text" name="description"><br>
-        Photo_url: <input type="text" name="photo_url"><br>
-<<<<<<< HEAD
+        Photo: <input type="file" name="photo" accept="image/jpeg,image/png,image/gif,image/webp"><br>
         Status: <select name="status">
             <option value="available">Available</option>
             <option value="foster">Foster</option>
         </select><br>
-=======
-        Status: <input type="text" name="status"><br>
->>>>>>> parent of 253de8d (added photo)
         <input type="submit" value="Add" name="submit">
     </form>
 </body>

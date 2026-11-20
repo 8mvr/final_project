@@ -33,6 +33,18 @@ class Pet{
         }
         return "Pet Added Successful";
     }
+    public function update($name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id){
+        $sql="UPDATE pet SET name=?,species=?,breed=?,age=?,sex=?,description=?,photo_url=?,status=? WHERE petid=?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute([$name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id]);
+        return "Updated Successfully";
+    }
+    public function delete($id){
+        $sql="DELETE FROM pet WHERE petid=?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        return "Deleted Successfully";
+    }
 }
 
 ?>
