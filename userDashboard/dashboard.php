@@ -65,12 +65,18 @@ catch(PDOException $e){
             <td><?php echo $pet["age"] ?></td>
             <td><?php echo $pet["sex"] ?></td>
             <td><?php echo $pet["description"] ?></td>
-            <td><?php echo $pet["photo_url"] ?></td>
+            <td>
+            <?php if($pet["photo_url"]){ ?>
+                <img src="Images/<?php echo htmlspecialchars($pet["photo_url"]) ?>" width="80" alt="">
+            <?php } else { echo "No photo"; } ?>
+            </td>
             <td><?php echo $pet["status"] ?></td>
             <td>
-                <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
-                <?php if($_SESSION["role"]==="admin"){ ?>
+                <?php if ($_SESSION["role"] === "admin") { ?>
+                    <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">Edit</a>
                     <a href="delete.php?id=<?php echo $pet["petid"] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+                <?php } else { ?>
+                    <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
                 <?php } ?>
             </td>
         </tr>
