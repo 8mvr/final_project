@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?php
 
 session_start();
@@ -14,7 +12,7 @@ use app\Models\Pet;
 
 $petModel=new Pet();
 $id=$_GET["id"];
-if(isset($_GET["id"])){
+if(isset($_GET["petid"])){
     try{
         $pet=$petModel->ViewbyID($id);
     }
@@ -54,4 +52,3 @@ if(isset($_GET["id"])){
     </form>
 </body>
 </html>
->>>>>>> 253de8d (added photo)

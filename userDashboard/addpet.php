@@ -23,8 +23,11 @@ if(isset($_POST["submit"])){
     $status=$_POST["status"];
 
     try{
+<<<<<<< HEAD
         echo $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
 
+=======
+>>>>>>> 253de8d (added photo)
         $photo_url=Upload::save($_FILES["photo"]) ?? "";
         $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
 
