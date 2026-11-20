@@ -29,6 +29,7 @@ if (isset($id)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Pet</title>
+    <link rel="stylesheet" href="../pets.css">
 </head>
 <body>
     <h1><?php echo $_SESSION["role"]==="admin" ? "Edit Pet" : "View Pet"; ?></h1>
