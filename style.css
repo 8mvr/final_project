@@ -24,8 +24,6 @@ form {
     justify-content: center;
 }
 
-/* ---------- Card ---------- */
-
 .login-container,
 .signup-container {
     width: 100%;
@@ -40,8 +38,6 @@ form {
 .signup-container {
     max-width: 640px;
 }
-
-/* ---------- Heading and intro text ---------- */
 
 h1 {
     margin: 0 0 8px;
@@ -60,15 +56,12 @@ h1 {
     color: #6a756e;
 }
 
-/* "First Name and Last Name" helper text under the label */
 .signup-container label + p {
     margin: 4px 0 6px;
     font-size: 11px;
     line-height: normal;
     color: #6a756e;
 }
-
-/* ---------- Labels and inputs ---------- */
 
 label {
     display: block;
@@ -117,8 +110,6 @@ input::placeholder {
     color: #9aa39d;
 }
 
-/* ---------- Button ---------- */
-
 input[type="submit"] {
     display: block;
     width: 100%;
@@ -143,8 +134,6 @@ input[type="submit"]:focus-visible {
     outline: 2px solid #24483e;
     outline-offset: 2px;
 }
-
-/* ---------- Divider and switch link ---------- */
 
 hr {
     border: 0;
@@ -176,8 +165,6 @@ hr {
     text-decoration: underline;
 }
 
-/* ---------- Message under the link (error / success) ---------- */
-
 .signup-link ~ p,
 .login-link ~ p {
     margin: 16px 0 0;
@@ -191,8 +178,6 @@ hr {
     color: #b3423a;
 }
 
-/* ---------- Small screens ---------- */
-
 @media (max-width: 600px) {
     .login-container,
     .signup-container {
@@ -204,7 +189,6 @@ hr {
     }
 }
 
-/* index page: only the h1 and links sit directly in the body */
 body:has(> h1) {
     flex-direction: column;
     gap: 12px;
