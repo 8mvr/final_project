@@ -39,12 +39,16 @@ if (isset($id)) {
             Breed: <input type="text" name="breed" value="<?php echo $pet["breed"] ?>"><br>
             Age: <input type="number" name="age" value="<?php echo $pet["age"] ?>"><br>
             Sex: <select name="sex">
-                <option value="Male" <?php if($pet["sex"]==="Male") echo "selected"; ?>>Male</option>
-                <option value="Female" <?php if($pet["sex"]==="Female") echo "selected"; ?>>Female</option>
+                <option value="male" <?php if($pet["sex"]==="Male") echo "selected"; ?>>Male</option>
+                <option value="female" <?php if($pet["sex"]==="Female") echo "selected"; ?>>Female</option>
             </select><br>
             Description: <input type="text" name="description" value="<?php echo $pet["description"] ?>"><br>
             Photo_url: <input type="text" name="photo_url" value="<?php echo $pet["photo_url"] ?>"><br>
-            Status: <input type="text" name="status" value="<?php echo $pet["status"] ?>"><br>
+            Status: <select name="" id="">
+                <option value="available" <?php echo $pet["status"] ?>>Available</option>
+                <option value="foster" <?php echo $pet["status"] ?>>Foster</option>
+                <!-- <input type="text" name="status" value="<?php echo $pet["status"] ?>"> -->
+            </select><br>
             <?php if($_SESSION["role"]==="admin"){ ?>
                 <input type="submit" value="Update" name="update">
             <?php } ?>
