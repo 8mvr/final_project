@@ -5,12 +5,11 @@
             <span>Hearth</span>
         </a>
         <nav class="main-nav" aria-label="Primary navigation">
-            <a class="nav-link <?= basename($_SERVER["PHP_SELF"]) === "welcome.php" ? "is-active" : "" ?>" href="welcome.php" <?= basename($_SERVER["PHP_SELF"]) === "welcome.php" ? 'aria-current="page"' : "" ?>>Home</a>
             <a class="nav-link <?= basename($_SERVER["PHP_SELF"]) === "dashboard.php" ? "is-active" : "" ?>" href="dashboard.php" <?= basename($_SERVER["PHP_SELF"]) === "dashboard.php" ? 'aria-current="page"' : "" ?>>Find a pet</a>
             <a class="nav-link" href="#about">Become a fosterer</a>
         </nav>
         <div class="header-actions">
-            <?php if ($isAdmin) { ?>
+            <?php if ($_SESSION["role"]=="admin") { ?>
                 <a class="button" href="addpet.php">Add a pet</a>
             <?php } ?>
             <a class="applications-button" href="#pet-list">My applications</a>

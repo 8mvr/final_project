@@ -70,7 +70,7 @@ sort($statuses, SORT_NATURAL | SORT_FLAG_CASE);
                 <?php if ($heroPet !== null) { ?>
                     <img src="Images/<?= $escape($heroPet["photo_url"]) ?>" alt="<?= $escape($heroPet["name"] ?? "Pet available for adoption") ?>">
                 <?php } else { ?>
-                    <span>Photo coming soon</span>
+                    <span>No Photo</span>
                 <?php } ?>
             </div>
         </section>
