@@ -11,12 +11,12 @@ require_once __DIR__."/../vendor/autoload.php";
 use app\Models\Pet;
 
 $petModel=new Pet();
-$id=$_GET["id"];
-if(isset($_GET["petid"])){
-    try{
-        $pet=$petModel->ViewbyID($id);
+$id = $_GET["id"] ?? null;
+if (isset($id)) {
+    try {
+        $pet = $petModel->ViewbyID($id);
     }
-    catch(PDOException $e){
+    catch (PDOException $e) {
         echo $e->getMessage();
     }
 }
@@ -38,13 +38,20 @@ if(isset($_GET["petid"])){
             Species: <input type="text" name="species" value="<?php echo $pet["species"] ?>"><br>
             Breed: <input type="text" name="breed" value="<?php echo $pet["breed"] ?>"><br>
             Age: <input type="number" name="age" value="<?php echo $pet["age"] ?>"><br>
-            Sex: <input type="text" name="sex" value="<?php echo $pet["sex"] ?>"><br>
+            Sex: <select name="sex">
+                <option value="Male" <?php if($pet["sex"]==="Male") echo "selected"; ?>>Male</option>
+                <option value="Female" <?php if($pet["sex"]==="Female") echo "selected"; ?>>Female</option>
+            </select><br>
             Description: <input type="text" name="description" value="<?php echo $pet["description"] ?>"><br>
             <?php if($pet["photo_url"]){ ?>
                 <img src="Images/<?php echo htmlspecialchars($pet["photo_url"]) ?>" width="120" alt=""><br>
             <?php } ?>
             Photo: <input type="file" name="photo" accept="image/*"><br>
-            Status: <input type="text" name="status" value="<?php echo $pet["status"] ?>"><br>
+            Status: <select name="status">
+                <?php foreach(["available","adopted","fostered"] as $s){ ?>
+                    <option value="<?php echo $s ?>" <?php if($pet["status"]===$s) echo "selected"; ?>><?php echo ucfirst($s) ?></option>
+                <?php } ?>
+            </select><br>
             <?php if($_SESSION["role"]==="admin"){ ?>
                 <input type="submit" value="Update" name="update">
             <?php } ?>

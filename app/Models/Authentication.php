@@ -1,7 +1,9 @@
 <?php
 
 namespace app\Models;
+
 use app\Database;
+use PDO;
 
 class Authentication{
     private $conn;
@@ -25,14 +27,12 @@ class Authentication{
         $sql="SELECT * FROM user where email=?";
         $stmt=$this->conn->prepare($sql);
         $stmt->execute([$email]);
-        $user=$stmt->fetch();
+        $user=$stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($email==$user["email"] && password_verify($password, $user["password"])){
-            return "Login Successful";
+        if($user && password_verify($password, $user["password"])){
+            return $user;   // return the full user row (includes role)
         }
-        else{
-            return "Invalid Credentials";
-        }
+        return false;
     }
 
 }

@@ -6,6 +6,10 @@ if(!isset($_SESSION["email"])){
     header("Location:../logout.php");
     exit();
 }
+if($_SESSION["role"]!=="admin"){
+    header("Location:dashboard.php");
+    exit();
+}
 
 require_once __DIR__."/../vendor/autoload.php";
 use app\Models\Pet;
@@ -48,10 +52,17 @@ if(isset($_POST["submit"])){
         Species: <input type="text" name="species"><br>
         Breed: <input type="text" name="breed"><br>
         Age: <input type="number" name="age"><br>
-        Sex: <input type="text" name="sex"><br>
+        Sex: <select name="sex">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br>
         Description: <input type="text" name="description"><br>
         Photo: <input type="file" name="photo" accept="image/*"><br>
-        Status: <input type="text" name="status"><br>
+        Status: <select name="status">
+            <option value="available">Available</option>
+            <option value="adopted">Adopted</option>
+            <option value="fostered">Fostered</option>
+        </select><br>
         <input type="submit" value="Add" name="submit">
     </form>
 </body>

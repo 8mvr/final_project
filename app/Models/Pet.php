@@ -11,6 +11,12 @@ class Pet{
         $database=new Database();
         $this->conn=$database->connection();
     }
+    public function ViewbyID($id){
+        $sql="SELECT * FROM pet WHERE petid=?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     public function getAll(){
         $sql="SELECT pet.*, user.full_name AS creator_name FROM pet INNER JOIN user ON pet.created_by = user.userid";
         $stmt=$this->conn->prepare($sql);

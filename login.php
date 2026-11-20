@@ -10,11 +10,14 @@ if(isset($_POST["submit"])){
     $password=$_POST["password"];
 
     $auth=new Authentication();
-    $message=$auth->login($email, $password);
-    if($message=="Login Successful"){
+    $user=$auth->login($email, $password);
+    if($user){
+        $_SESSION["email"]=$user["email"];
+        $_SESSION["role"]=$user["role"];
         header("Location:./userDashboard/dashboard.php");
-        $_SESSION["email"]=$email;
+        exit();
     }
+    $message="Invalid Credentials";
 }
 
 ?>
@@ -25,7 +28,7 @@ if(isset($_POST["submit"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <form action="login.php" method="POST">   

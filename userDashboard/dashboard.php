@@ -31,7 +31,9 @@ catch(PDOException $e){
 <body>
     Hello <?php echo $_SESSION["email"]; ?>
     <br>
+    <?php if ($_SESSION["role"] == "admin") { ?>
     <a href="addpet.php">Add pet</a>
+    <?php } ?>
     <table border="1">
         <tr>
             <th>Name</th>
@@ -58,18 +60,18 @@ catch(PDOException $e){
             foreach($pets as $pet){
         ?>
         <tr>
-            <td><?php echo $pet["name"] ?></td>
-            <td><?php echo $pet["species"] ?></td>
-            <td><?php echo $pet["breed"] ?></td>
-            <td><?php echo $pet["age"] ?></td>
-            <td><?php echo $pet["sex"] ?></td>
-            <td><?php echo $pet["description"] ?></td>
+            <td><?php echo htmlspecialchars($pet["name"]) ?></td>
+            <td><?php echo htmlspecialchars($pet["species"]) ?></td>
+            <td><?php echo htmlspecialchars($pet["breed"]) ?></td>
+            <td><?php echo htmlspecialchars($pet["age"]) ?></td>
+            <td><?php echo htmlspecialchars($pet["sex"]) ?></td>
+            <td><?php echo htmlspecialchars($pet["description"]) ?></td>
             <td>
             <?php if($pet["photo_url"]){ ?>
                 <img src="Images/<?php echo htmlspecialchars($pet["photo_url"]) ?>" width="80" alt="">
             <?php } else { echo "No photo"; } ?>
             </td>
-            <td><?php echo $pet["status"] ?></td>
+            <td><?php echo ($pet["status"] === "available") ? "Available" : htmlspecialchars($pet["status"]) ?></td>
             <td>
                 <?php if ($_SESSION["role"] === "admin") { ?>
                     <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">Edit</a>
