@@ -31,7 +31,7 @@ if (isset($id)) {
 </head>
 <body>
     <h1>Update Pet</h1>
-    <form action="update.php" method="POST" enctype="multipart/form-data">
+    <form action="update.php" method="POST">
         <fieldset <?php if($_SESSION["role"]!=="admin") echo "disabled"; ?> style="border:0;padding:0">
             <input type="hidden" name="id" value="<?php echo $pet["petid"] ?>">
             Pet Name: <input type="text" name="name" value="<?php echo $pet["name"] ?>"><br>

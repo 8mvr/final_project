@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2026 at 06:22 AM
+-- Generation Time: Nov 08, 2026 at 10:12 AM
 -- Server version: 8.0.42
 -- PHP Version: 8.2.12
 
@@ -33,9 +33,9 @@ CREATE TABLE `adoption` (
   `petid` int NOT NULL,
   `reviewed_by` int NOT NULL,
   `application_date` date DEFAULT NULL,
-  `status` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `reason` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `status` varchar(50) DEFAULT NULL,
+  `reason` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -50,9 +50,9 @@ CREATE TABLE `appointment` (
   `adoptionid` int NOT NULL,
   `fosterid` int NOT NULL,
   `appointment_datetime` datetime DEFAULT NULL,
-  `purpose` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `purpose` varchar(250) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -68,8 +68,8 @@ CREATE TABLE `foster` (
   `application_date` date DEFAULT NULL,
   `planned_start_date` date DEFAULT NULL,
   `planned_end_date` date DEFAULT NULL,
-  `status` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `status` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -80,23 +80,15 @@ CREATE TABLE `foster` (
 CREATE TABLE `pet` (
   `petid` int NOT NULL,
   `created_by` int NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `species` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `breed` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `species` varchar(50) NOT NULL,
+  `breed` varchar(50) NOT NULL,
   `age` int NOT NULL,
-  `sex` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `photo_url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `pet`
---
-
-INSERT INTO `pet` (`petid`, `created_by`, `name`, `species`, `breed`, `age`, `sex`, `description`, `photo_url`, `status`) VALUES
-(12, 7, '3', '34', '34', 3, '3', '34', '3', '3'),
-(13, 12, 'justin palbog', 'Dog', 'bulldog', 99, 'pwede', 'tikolero kahit tanghaling tapat', '1', 'ready to eut');
+  `sex` varchar(50) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `photo_url` varchar(255) NOT NULL,
+  `status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -111,11 +103,11 @@ CREATE TABLE `placement` (
   `adoptionid` int NOT NULL,
   `fosterid` int NOT NULL,
   `recorded_by` int NOT NULL,
-  `placementtype` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `placementtype` varchar(50) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
-  `status` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `status` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -125,12 +117,12 @@ CREATE TABLE `placement` (
 
 CREATE TABLE `user` (
   `userid` int NOT NULL,
-  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `role` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `role` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `user`
@@ -144,11 +136,7 @@ INSERT INTO `user` (`userid`, `full_name`, `email`, `password`, `role`, `created
 (5, 'Maverick Moran', 'maverickmoran3@gmail.com', '$2y$10$k0ei.pQKa3N1DLF3gxH8NOkoQnc5/mUAGvg.MDI2GrDoVq6ahHGhu', 'role', '2026-11-03 12:59:48'),
 (6, 'Jumong Malbog', 'malbog@gmail.com', '$2y$10$.P7cVHVUf.rarx9BRa.gNeSZ2VYCA5Lw5iVk7GNI.bisQwDsZoTPO', 'user', '2026-11-03 13:01:00'),
 (7, 'test2', 'test2@gmail.com', '$2y$10$GsVyA1lTHtZ47Uvq1btfveu/VsLlKMNxjCYv4hDmcNfOwBmtrL.FC', 'user', '2026-11-05 09:52:21'),
-(8, 'test3', 'testmo@gmail.com', '$2y$10$Iv6WJu5orKhKWsk7hQ0unuVg5IeJoc2VSeUX8MU47r1z5CC6xPl5e', 'user', '2026-11-05 23:56:19'),
-(10, 'castajustin', 'casta@gmail.com', '$2y$10$5MS0Gn/jNiNshssiCcdIu.iBmTrpydGNTrMItSkLi3rMy2yEVgLbm', 'user', '2026-11-11 03:25:57'),
-(12, 'castajustin', 'casta1@gmail.com', '$2y$10$/cJQ0dJzAmMLIoFMnwDf7.gV64AhkhDUcKyEiRM5Kf8DzufXRjJHm', 'user', '2026-11-11 03:26:35'),
-(13, 'test', 'test3@gmail.com', '$2y$10$EiCyFBvE2nHbLuOlV1E1muSzf60cYj9RV3t0LvZPwuQ2V5xsi9hsm', 'user', '2026-11-14 10:20:54'),
-(14, 'admin', 'admin@gmail.com', '$2y$10$FwJjy0IBO3lvYQK/7WABjeDkymTto7BExCuyac.a506pVU6Ha9Laa', 'admin', '2026-11-14 11:58:28');
+(8, 'test3', 'testmo@gmail.com', '$2y$10$Iv6WJu5orKhKWsk7hQ0unuVg5IeJoc2VSeUX8MU47r1z5CC6xPl5e', 'user', '2026-11-05 23:56:19');
 
 --
 -- Indexes for dumped tables
@@ -233,7 +221,7 @@ ALTER TABLE `foster`
 -- AUTO_INCREMENT for table `pet`
 --
 ALTER TABLE `pet`
-  MODIFY `petid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `petid` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `placement`
@@ -245,7 +233,7 @@ ALTER TABLE `placement`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `userid` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables

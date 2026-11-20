@@ -72,8 +72,6 @@ catch(PDOException $e){
                 <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
                 <?php if($_SESSION["role"]==="admin"){ ?>
                     <a href="delete.php?id=<?php echo $pet["petid"] ?>" onclick="return confirm('Are you sure?')">Delete</a>
-                <?php } else { ?>
-                    <a href="viewbyid.php?id=<?php echo $pet["petid"] ?>">View</a>
                 <?php } ?>
             </td>
         </tr>

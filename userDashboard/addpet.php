@@ -13,7 +13,6 @@ if($_SESSION["role"]!=="admin"){
 
 require_once __DIR__."/../vendor/autoload.php";
 use app\Models\Pet;
-use app\upload;
 
 $petModel=new Pet();
 if(isset($_POST["submit"])){
@@ -27,13 +26,11 @@ if(isset($_POST["submit"])){
     $status=$_POST["status"];
 
     try{
-        $photo_url=Upload::save($_FILES["photo"]) ?? "";
         $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
 
         header("Location:dashboard.php");
-        exit();
     }
-    catch(Exception $e){
+    catch(PDOException $e){
         echo $e->getMessage();
     }
 }
@@ -48,7 +45,7 @@ if(isset($_POST["submit"])){
 </head>
 <body>
     <h1>Add Pet</h1>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST">
         Pet Name: <input type="text" name="name"><br>
         Species: <input type="text" name="species"><br>
         Breed: <input type="text" name="breed"><br>
@@ -59,10 +56,14 @@ if(isset($_POST["submit"])){
         </select><br>
         Description: <input type="text" name="description"><br>
         Photo_url: <input type="text" name="photo_url"><br>
+<<<<<<< HEAD
         Status: <select name="status">
             <option value="available">Available</option>
             <option value="foster">Foster</option>
         </select><br>
+=======
+        Status: <input type="text" name="status"><br>
+>>>>>>> parent of 253de8d (added photo)
         <input type="submit" value="Add" name="submit">
     </form>
 </body>
