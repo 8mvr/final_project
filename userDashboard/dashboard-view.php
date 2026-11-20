@@ -6,29 +6,36 @@
     <meta name="theme-color" content="#24483e">
     <title>Pet dashboard | Hearth</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="header.css">
     <script src="dashboard.js" defer></script>
 </head>
 <body class="dashboard-page" id="top">
-    <header class="site-header">
-        <div class="header-inner">
-            <a class="brand" href="#top" aria-label="Hearth pet dashboard">
-                <span class="brand-mark" aria-hidden="true">h</span>
-                <span>hearth</span>
-            </a>
-            <div class="header-actions">
-                <span class="welcome">Welcome, <?= $escape($_SESSION["email"]) ?></span>
-                <?php if ($isAdmin) { ?>
-                    <a class="button" href="addpet.php">Add a pet</a>
-                <?php } ?>
-            </div>
-        </div>
-    </header>
+    <?php require __DIR__ . "/header.php"; ?>
 
     <main class="main-content">
-        <section class="intro" aria-labelledby="page-title">
-            <p class="eyebrow">Pet adoption and foster coordination</p>
-            <h1 id="page-title">Find your next best friend.</h1>
-            <p class="intro-copy">Meet the pets in our care and learn a little about each one. Every adoption starts with getting to know them.</p>
+        <?php
+            $heroPet = null;
+            foreach ($pets as $pet) {
+                if (trim((string) ($pet["photo_url"] ?? "")) !== "") {
+                    $heroPet = $pet;
+                    break;
+                }
+            }
+        ?>
+        <section class="hero" aria-labelledby="page-title">
+            <div class="hero-copy">
+                <p class="eyebrow">Find a companion</p>
+                <h1 id="page-title">Give a pet a loving home.</h1>
+                <p class="intro-copy">Meet the animals in our care and find the friend who fits your life.</p>
+                <a class="button hero-button" href="#pet-list">Meet our pets</a>
+            </div>
+            <div class="hero-image">
+                <?php if ($heroPet !== null) { ?>
+                    <img src="Images/<?= $escape($heroPet["photo_url"]) ?>" alt="<?= $escape($heroPet["name"] ?? "Pet available for adoption") ?>">
+                <?php } else { ?>
+                    <span>Photo coming soon</span>
+                <?php } ?>
+            </div>
         </section>
 
         <section class="pets-panel" id="pet-list" aria-labelledby="pets-title">
@@ -106,11 +113,6 @@
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <p>A little care, a lasting connection.</p>
-            <a href="../logout.php">Log out</a>
-        </div>
-    </footer>
+    <?php require __DIR__ . "/footer.php"; ?>
 </body>
 </html>

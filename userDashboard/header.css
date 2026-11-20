@@ -1,0 +1,127 @@
+.site-header {
+    height: 78px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+    width: min(1120px, calc(100% - 48px));
+    height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    margin: 0 auto;
+}
+
+.brand {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--forest);
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    text-decoration: none;
+}
+
+.brand-mark {
+    width: 24px;
+    height: 24px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--forest);
+    border-radius: 50%;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+}
+
+.nav-link {
+    color: #6f7973;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.nav-link:hover,
+.nav-link.is-active {
+    color: var(--forest);
+}
+
+.header-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.applications-button {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    border: 1px solid #dfe2da;
+    border-radius: 7px;
+    background: var(--paper);
+    color: #2e4038;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.applications-button:hover {
+    border-color: var(--forest);
+    background: var(--soft-green);
+    color: var(--forest);
+}
+
+.brand:focus-visible,
+.nav-link:focus-visible,
+.applications-button:focus-visible,
+.header-actions .button:focus-visible {
+    outline: 3px solid rgba(36, 72, 62, 0.22);
+    outline-offset: 3px;
+}
+
+@media (max-width: 850px) {
+    .main-nav {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-header,
+    .header-inner {
+        height: 68px;
+    }
+
+    .header-inner {
+        width: min(100% - 32px, 1120px);
+        gap: 12px;
+    }
+
+    .brand {
+        font-size: 21px;
+    }
+
+    .applications-button {
+        display: none;
+    }
+
+    .header-actions .button {
+        min-height: 38px;
+        padding: 0 12px;
+    }
+}
