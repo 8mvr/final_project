@@ -2,29 +2,34 @@
 
 session_start();
 
-if($_SESSION["role"]!=="admin"){
-    header("Location:dashboard.php");
+if(!isset($_SESSION["email"])){
+    header("Location:../auth/logout.php");
     exit();
 }
-if(!isset($_SESSION["email"])){
-    header("Location:../logout.php");
+if(($_SESSION["role"] ?? "")!=="admin"){
+    header("Location:dashboard.php");
     exit();
 }
 
 require_once __DIR__."/../vendor/autoload.php";
-require_once __DIR__."/upload_photo.php";
+require_once __DIR__."/../includes/upload_photo.php";
 use app\Models\Pet;
 
 $petModel=new Pet();
 if(isset($_POST["update"])){
-    $id=$_POST["id"];
-    $name=$_POST["name"];
-    $species=$_POST["species"];
-    $breed=$_POST["breed"];
-    $age=$_POST["age"];
-    $sex=$_POST["sex"];
-    $description=$_POST["description"];
-    $status=$_POST["status"];
+    $id=(int)($_POST["id"] ?? 0);
+    $name=trim($_POST["name"] ?? "");
+    $species=trim($_POST["species"] ?? "");
+    $breed=trim($_POST["breed"] ?? "");
+    $age=(int)($_POST["age"] ?? 0);
+    $sex=$_POST["sex"] ?? "Male";
+    $description=trim($_POST["description"] ?? "");
+    $status=$_POST["status"] ?? "Available";
+
+    if($id <= 0 || $name === "" || $species === ""){
+        header("Location:admin.php?err=" . urlencode("Pet name and species are required."));
+        exit();
+    }
 
     try{
         // New upload replaces the photo; otherwise keep the existing one
@@ -34,7 +39,7 @@ if(isset($_POST["update"])){
             $photo_url=$existing["photo_url"] ?? "";
         }
         $petModel->update($name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id);
-        header("Location:dashboard.php");
+        header("Location:admin.php?updated=1");
     }
     catch(PDOException | RuntimeException $e){
         echo $e->getMessage();

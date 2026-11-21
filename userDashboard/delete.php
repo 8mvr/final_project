@@ -2,28 +2,31 @@
 
 session_start();
 
-if($_SESSION["role"]!=="admin"){
+if (!isset($_SESSION["email"])) {
+    header("Location:../auth/logout.php");
+    exit();
+}
+if (($_SESSION["role"] ?? "") !== "admin") {
     header("Location:dashboard.php");
     exit();
 }
-if(!isset($_SESSION["email"])){
-    header("Location:../logout.php");
-    exit();
-}
 
-require_once __DIR__."/../vendor/autoload.php";
+require_once __DIR__ . "/../vendor/autoload.php";
+
 use app\Models\Pet;
 
-$petModel=new Pet();
-$id=$_GET["id"];
-if(isset($_GET["id"])){
-    try{
-        $petModel->delete($id);
-        header("Location:dashboard.php");
-    }
-    catch(PDOException $e){
-        echo $e->getMessage();
-    }
+$id = $_GET["id"] ?? null;
+if ($id === null) {
+    header("Location:admin.php");
+    exit();
 }
+$id = (int)$id;
 
-?>
+try {
+    (new Pet())->deleteWithRelations($id);
+
+    header("Location:admin.php?deleted=1");
+} catch (PDOException $e) {
+    header("Location:admin.php?err=" . urlencode($e->getMessage()));
+}
+exit();

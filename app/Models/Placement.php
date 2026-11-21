@@ -1,0 +1,121 @@
+<?php
+
+namespace app\Models;
+
+use app\Database;
+use PDO;
+
+class Placement
+{
+    private $conn;
+
+    public function __construct()
+    {
+        $database = new Database();
+        $this->conn = $database->connection();
+    }
+
+    /** All placements with pet and person names. */
+    public function getAll()
+    {
+        return $this->conn->query(
+            "SELECT pl.*, p.name AS pet_name, u.full_name, u.email,
+                    r.full_name AS recorded_by_name
+             FROM placement pl
+             INNER JOIN pet p ON pl.petid = p.petid
+             INNER JOIN user u ON pl.userid = u.userid
+             LEFT JOIN user r ON pl.recorded_by = r.userid
+             ORDER BY pl.placementid DESC"
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** Users + pets + approved adoptions/fosters, for the "new placement" dropdowns. */
+    public function options()
+    {
+        $users = $this->conn->query("SELECT userid, full_name, email FROM user ORDER BY full_name")->fetchAll(PDO::FETCH_ASSOC);
+        $pets  = $this->conn->query("SELECT petid, name, status FROM pet ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
+        return ["users" => $users, "pets" => $pets];
+    }
+
+    /** Create a placement record. */
+    public function insert($userid, $petid, $adoptionid, $fosterid, $placementtype, $start_date, $end_date, $status, $recorded_by)
+    {
+        $sql = "INSERT INTO placement(userid,petid,adoptionid,fosterid,recorded_by,placementtype,start_date,end_date,status)
+                VALUES (?,?,?,?,?,?,?,?,?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            $userid,
+            $petid,
+            $adoptionid ?: null,
+            $fosterid ?: null,
+            $recorded_by,
+            $placementtype,
+            $start_date ?: null,
+            $end_date ?: null,
+            $status
+        ]);
+        return "Placement recorded";
+    }
+
+    /** Update a placement record. */
+    public function update($placementid, $placementtype, $start_date, $end_date, $status)
+    {
+        $sql = "UPDATE placement SET placementtype=?, start_date=?, end_date=?, status=? WHERE placementid=?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$placementtype, $start_date ?: null, $end_date ?: null, $status, $placementid]);
+        return "Placement updated";
+    }
+
+    public function delete($placementid)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM placement WHERE placementid=?");
+        $stmt->execute([$placementid]);
+        return "Placement deleted";
+    }
+
+    /** All appointments with names. */
+    public function appointments()
+    {
+        return $this->conn->query(
+            "SELECT ap.*, p.name AS pet_name, u.full_name, u.email
+             FROM appointment ap
+             INNER JOIN pet p ON ap.petid = p.petid
+             INNER JOIN user u ON ap.userid = u.userid
+             ORDER BY ap.appointment_datetime DESC, ap.appointmentid DESC"
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** Create an appointment. */
+    public function insertAppointment($userid, $petid, $adoptionid, $fosterid, $appointment_datetime, $purpose, $status)
+    {
+        $sql = "INSERT INTO appointment(userid,petid,adoptionid,fosterid,appointment_datetime,purpose,status)
+                VALUES (?,?,?,?,?,?,?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            $userid,
+            $petid,
+            $adoptionid ?: null,
+            $fosterid ?: null,
+            $appointment_datetime,
+            $purpose,
+            $status
+        ]);
+        return "Appointment scheduled";
+    }
+
+    /** Update an appointment (datetime / purpose / status). */
+    public function updateAppointment($appointmentid, $appointment_datetime, $purpose, $status)
+    {
+        $sql = "UPDATE appointment SET appointment_datetime=?, purpose=?, status=? WHERE appointmentid=?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$appointment_datetime, $purpose, $status, $appointmentid]);
+        return "Appointment updated";
+    }
+
+    public function deleteAppointment($appointmentid)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM appointment WHERE appointmentid=?");
+        $stmt->execute([$appointmentid]);
+        return "Appointment deleted";
+    }
+}

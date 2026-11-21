@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once __DIR__."/vendor/autoload.php";
+require_once __DIR__."/../vendor/autoload.php";
 use app\Models\Authentication;
 
 $message="";
@@ -14,7 +14,7 @@ if(isset($_POST["submit"])){
     if($user){
         $_SESSION["email"]=$user["email"];
         $_SESSION["role"]=$user["role"];
-        header("Location:./userDashboard/dashboard.php");
+        header("Location:../userDashboard/".($user["role"]==="admin" ? "admin.php" : "dashboard.php"));
         exit();
     }
     $message="Invalid Credentials";
@@ -28,7 +28,7 @@ if(isset($_POST["submit"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
 </head>
 <body>
     <form action="login.php" method="POST">   

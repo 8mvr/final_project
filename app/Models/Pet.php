@@ -39,6 +39,17 @@ class Pet{
         $stmt->execute([$name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id]);
         return "Updated Successfully";
     }
+    public function deleteWithRelations($id){
+        foreach(["appointment", "placement", "adoption", "foster"] as $table){
+            $stmt=$this->conn->prepare("DELETE FROM `{$table}` WHERE petid=?");
+            $stmt->execute([$id]);
+        }
+
+        $sql="DELETE FROM pet WHERE petid=?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute([$id]);
+        return "Deleted Successfully";
+    }
     public function delete($id){
         $sql="DELETE FROM pet WHERE petid=?";
         $stmt=$this->conn->prepare($sql);

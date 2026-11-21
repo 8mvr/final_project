@@ -23,6 +23,13 @@ class Authentication{
         return "Success";
     }
 
+    public function findByEmail($email){
+        $sql="SELECT userid, full_name, email, role, created_at FROM user WHERE email=?";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function login($email, $password){
         $sql="SELECT * FROM user where email=?";
         $stmt=$this->conn->prepare($sql);
