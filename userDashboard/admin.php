@@ -77,7 +77,8 @@ usort($pets, fn($a, $b) => $b["petid"] <=> $a["petid"]);
         <?php if(isset($_GET["err"]) && $_GET["err"] === "missing"){ ?><p class="notice">Pet name and species are required.</p><?php } ?>
 
         <section class="stats">
-            <div class="stat"><span>Available pets</span><b><?php echo $count["available"] ?></b><small>of <?php echo $total ?> total pets</small></div>
+            <div class="stat"><span>Total pets</span><b><?php echo $total ?></b></div>
+            <div class="stat"><span>Available pets</span><b><?php echo $count["available"] ?></b></div>
             <div class="stat"><span>In foster care</span><b><?php echo $count["foster"] ?></b></div>
             <div class="stat"><span>Not available</span><b><?php echo $count["not available"] ?></b></div>
         </section>
@@ -89,8 +90,8 @@ usort($pets, fn($a, $b) => $b["petid"] <=> $a["petid"]);
                 <a class="btn-dark btn-sm" href="addpet.php">Add pet</a>
             </div>
 
-            <div class="table-wrap">
-                <table>
+            <div class="table-wrap admin-table-wrap">
+                <table class="admin-table">
                     <tr>
                         <th>Photo</th>
                         <th>Pet</th>
@@ -123,5 +124,6 @@ usort($pets, fn($a, $b) => $b["petid"] <=> $a["petid"]);
         </section>
 </main>
 </div>
+    <?php require __DIR__."/../includes/footer.php"; ?>
 </body>
 </html>

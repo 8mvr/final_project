@@ -15,7 +15,10 @@ try{
     <p class="admin-side-label">Administrator</p>
     <nav class="admin-side-nav" aria-label="Admin navigation">
         <a href="admin.php" class="<?php echo $current === "admin.php" ? "active" : "" ?>" <?php echo $current === "admin.php" ? 'aria-current="page"' : "" ?>>Dashboard</a>
-        <!-- <a href="addpet.php" class="<?php echo $current === "addpet.php" ? "active" : "" ?>" <?php echo $current === "addpet.php" ? 'aria-current="page"' : "" ?>>Add pet</a> -->
+        <a href="">Applications</a>
+        <a href="">Appointments</a>
+        <a href="">Placements</a>
+        <a href="users.php" class="<?php echo $current === "users.php" ? "active" : "" ?>" <?php echo $current === "users.php" ? 'aria-current="page"' : "" ?>>Users</a>
     </nav>
     <div class="admin-me">
         <strong><?php echo htmlspecialchars($fullName); ?></strong>

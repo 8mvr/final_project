@@ -4,13 +4,22 @@ require_once __DIR__."/../vendor/autoload.php";
 use app\Models\Authentication;
 
 $message="";
+$full_name="";
+$email="";
 if(isset($_POST["submit"])){
-    $full_name=$_POST["full_name"];
-    $email=$_POST["email"];
-    $password=$_POST["password"];
+    $full_name=trim($_POST["full_name"] ?? "");
+    $email=trim($_POST["email"] ?? "");
+    $password=$_POST["password"] ?? "";
+    $confirmPassword=$_POST["confirm_password"] ?? "";
 
-    $auth=new Authentication();
-    $message=$auth->signup($full_name, $email, $password);
+    if($full_name === "" || $email === "" || $password === ""){
+        $message="All fields are required.";
+    }elseif($password !== $confirmPassword){
+        $message="Passwords do not match.";
+    }else{
+        $auth=new Authentication();
+        $message=$auth->signup($full_name, $email, $password);
+    }
 }
 
 ?>
@@ -31,13 +40,16 @@ if(isset($_POST["submit"])){
 
             <label for="full_name"><b>Full Name</b></label>
             <p>First Name and Last Name</p>
-            <input type="text" name="full_name" required>
+            <input type="text" name="full_name" value="<?php echo htmlspecialchars($full_name, ENT_QUOTES, 'UTF-8'); ?>" autocomplete="name" required>
 
             <label for="email"><b>Email Address</b></label>
-            <input type="email" name="email" required>
+            <input type="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" autocomplete="email" required>
 
             <label for="password"><b>Password</b></label>
-            <input type="password" name="password" required>
+            <input type="password" name="password" autocomplete="new-password" required>
+
+            <label for="confirm_password"><b>Confirm Password</b></label>
+            <input type="password" name="confirm_password" autocomplete="new-password" required>
 
             <input type="submit" name="submit" value="Create Account">
             <p class="login-link">Already have an account? <a href="login.php">Login</a></p>
@@ -45,7 +57,7 @@ if(isset($_POST["submit"])){
             <?php
 
             if($message!==""){
-                echo"<p>$message</p>";
+                echo "<p role=\"alert\">" . htmlspecialchars($message, ENT_QUOTES, "UTF-8") . "</p>";
             }
 
             ?>

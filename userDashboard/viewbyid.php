@@ -182,9 +182,7 @@ if (!$pet) {
     </div>
 
 <?php } ?>
-<br>
-<?php require __DIR__."/../includes/footer.php"; ?>
 </main>
-
+    <?php require __DIR__."/../includes/footer.php"; ?>
 </body>
 </html>
