@@ -143,7 +143,7 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Placement records · Hearth</title>
     <link rel="stylesheet" href="../assets/css/pet.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/admin.css?v=2">
 </head>
 <body>
 <div class="admin-layout">
@@ -177,6 +177,7 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
         </form>
 
         <section class="placement-stats">
+            <div class="placement-stat"><span>Total placements</span><b><?php echo $totalPlacements; ?></b><small>Adoption and foster records</small></div>
             <div class="placement-stat"><span>Active placements</span><b><?php echo $active; ?></b><small>Adoptions and foster placements</small></div>
             <div class="placement-stat"><span>Follow-ups due this week</span><b>0</b><small>No follow-up dates recorded</small></div>
             <div class="placement-stat"><span>Completed placements</span><b><?php echo count(array_filter($placements, fn($p) => strcasecmp((string)$p["status"], "Completed") === 0)); ?></b><small><?php echo $adoptions; ?> adoption records</small></div>

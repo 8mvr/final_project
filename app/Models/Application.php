@@ -165,20 +165,72 @@ class Application
     /** Approve / reject an adoption application. */
     public function reviewAdoption($adoptionid, $status, $reviewed_by)
     {
-        $stmt = $this->conn->prepare(
-            "UPDATE adoption SET status=?, reviewed_by=? WHERE adoptionid=?"
-        );
-        $stmt->execute([$status, $reviewed_by, $adoptionid]);
-        return "Adoption application $status";
+        $this->conn->beginTransaction();
+        try{
+            $application = $this->conn->prepare(
+                "SELECT petid FROM adoption WHERE adoptionid=?"
+            );
+            $application->execute([$adoptionid]);
+            $row = $application->fetch(PDO::FETCH_ASSOC);
+            if(!$row){
+                throw new \RuntimeException("Adoption application not found.");
+            }
+
+            $stmt = $this->conn->prepare(
+                "UPDATE adoption SET status=?, reviewed_by=? WHERE adoptionid=?"
+            );
+            $stmt->execute([$status, $reviewed_by, $adoptionid]);
+
+            if(strcasecmp($status, "Approved") === 0){
+                $pet = $this->conn->prepare(
+                    "UPDATE pet SET status='Not Available' WHERE petid=?"
+                );
+                $pet->execute([(int)$row["petid"]]);
+            }
+
+            $this->conn->commit();
+            return "Adoption application $status";
+        }catch(\Throwable $error){
+            if($this->conn->inTransaction()){
+                $this->conn->rollBack();
+            }
+            throw $error;
+        }
     }
 
     /** Approve / reject a foster application. */
     public function reviewFoster($fosterid, $status, $reviewed_by)
     {
-        $stmt = $this->conn->prepare(
-            "UPDATE foster SET status=?, reviewed_by=? WHERE fosterid=?"
-        );
-        $stmt->execute([$status, $reviewed_by, $fosterid]);
-        return "Foster application $status";
+        $this->conn->beginTransaction();
+        try{
+            $application = $this->conn->prepare(
+                "SELECT petid FROM foster WHERE fosterid=?"
+            );
+            $application->execute([$fosterid]);
+            $row = $application->fetch(PDO::FETCH_ASSOC);
+            if(!$row){
+                throw new \RuntimeException("Foster application not found.");
+            }
+
+            $stmt = $this->conn->prepare(
+                "UPDATE foster SET status=?, reviewed_by=? WHERE fosterid=?"
+            );
+            $stmt->execute([$status, $reviewed_by, $fosterid]);
+
+            if(strcasecmp($status, "Approved") === 0){
+                $pet = $this->conn->prepare(
+                    "UPDATE pet SET status='Foster' WHERE petid=?"
+                );
+                $pet->execute([(int)$row["petid"]]);
+            }
+
+            $this->conn->commit();
+            return "Foster application $status";
+        }catch(\Throwable $error){
+            if($this->conn->inTransaction()){
+                $this->conn->rollBack();
+            }
+            throw $error;
+        }
     }
 }

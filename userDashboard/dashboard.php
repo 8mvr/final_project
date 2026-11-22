@@ -39,6 +39,9 @@ $sex = in_array($sexInput, ["all", "female", "male"], true) ? $sexInput : "all";
 $qLow = mb_strtolower($q);
 $pets = array_values(array_filter($pets, function($pet) use ($qLow, $avail, $age, $sex) {
     $status = strtolower(trim($pet["status"]));
+    if(in_array($status, ["not available", "foster"], true)){
+        return false;
+    }
     $isAvailable = $status === "available";
     $petAge = (int)$pet["age"];
     $petAgeGroup = $petAge < 1 ? "under1" : ($petAge <= 5 ? "1-5" : "6plus");
