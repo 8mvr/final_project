@@ -173,7 +173,7 @@
 }
 .promo-btn:hover { background: #fff; text-decoration: none; }
 
-.empty { padding: 48px 24px; text-align: center; background: #fffefa; border: 1px dashed #d4d6cb; border-radius: 12px; }
+.empty { padding: 48px 24px; text-align: center; background: #fffefa; border: 1px solid #d4d6cb; border-radius: 12px; }
 .empty h3 { margin: 0 0 6px; font-family: Georgia, serif; font-weight: 400; font-size: 20px; color: #24483e; }
 .empty p { margin: 0 0 14px; font-size: 12px; color: #6a756e; }
 .empty .reset { font-size: 12px; font-weight: 600; color: #24483e; }

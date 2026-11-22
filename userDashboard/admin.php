@@ -65,7 +65,7 @@ usort($pets, fn($a, $b) => $b["petid"] <=> $a["petid"]);
         <!-- ================= HOME / DASHBOARD ================= -->
         <header class="top">
             <div>
-                <h1><?php echo $greeting ?>, <?php echo e($firstName) ?></h1>
+                <h1><?php echo $greeting ?>, <?php echo strtoupper(e($firstName)) ?></h1>
             </div>
         </header>
 
@@ -110,7 +110,7 @@ usort($pets, fn($a, $b) => $b["petid"] <=> $a["petid"]);
                             <td><strong><?php echo e($p["name"]) ?></strong></td>
                             <td><?php echo e($p["species"]) ?></td>
                             <td><?php echo e($p["breed"]) ?></td>
-                            <td><?php echo (int)$p["age"] ?> <?php echo (int)$p["age"] === 1 ? "yr" : "yrs" ?></td>
+                            <td><?php echo (int)$p["age"] ?> <?php echo (int)$p["age"] === 1 ? "year" : "years" ?></td>
                             <td><?php echo e($p["sex"]) ?></td>
                             <td><span class="badge <?php echo e(str_replace(" ", "-", strtolower($p["status"]))) ?>"><?php echo e($p["status"]) ?></span></td>
                             <td>
@@ -124,6 +124,5 @@ usort($pets, fn($a, $b) => $b["petid"] <=> $a["petid"]);
         </section>
 </main>
 </div>
-    <?php require __DIR__."/../includes/footer.php"; ?>
 </body>
 </html>

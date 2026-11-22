@@ -221,6 +221,123 @@ form.pet-form { max-width: 640px; padding: 32px; line-height: 1.5; border-radius
 }
 .btn-back:hover { background: #1c3a32; text-decoration: none; }
 
+/* ---------- Adoption and foster applications ---------- */
+.application-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 36px 56px;
+}
+.application-back { display: inline-block; margin-bottom: 18px; color: #6a756e; font-size: 12px; }
+.application-page-head h1 { margin: 0 0 6px; }
+.application-page-head p { margin: 0 0 18px; color: #6a756e; }
+.application-progress {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 18px;
+    color: #9aa39d;
+    font-size: 10px;
+}
+.application-progress span {
+    position: relative;
+    min-height: 38px;
+    display: flex;
+    align-items: flex-start;
+    padding: 0 8px 8px 34px;
+    border-bottom: 2px solid #e4e1d6;
+}
+.application-progress span::before {
+    content: attr(data-step);
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #dddfd5;
+    border-radius: 50%;
+    background: #fffefa;
+    color: #7e8983;
+    font-size: 9px;
+}
+.application-progress span.active::before,
+.application-progress span.complete::before {
+    border-color: #24483e;
+    background: #24483e;
+    color: #fff;
+}
+.application-progress span.active { border-color: #24483e; color: #24483e; font-weight: 700; }
+.application-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) 280px;
+    gap: 18px;
+    align-items: start;
+}
+.application-form { max-width: none; width: 100%; }
+.application-form h2 { margin: 0 0 16px; font-family: Georgia, serif; font-size: 22px; }
+.application-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.application-choice {
+    margin: 0 0 16px;
+    padding: 14px 0 0;
+    border: 0;
+    border-top: 1px solid #eceae1;
+}
+.application-choice legend { margin-bottom: 8px; color: #24483e; font-size: 11px; }
+.application-choice label {
+    flex: 1;
+    min-width: 150px;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 8px 8px 0;
+    padding: 10px 12px;
+    border: 1px solid #dddfd5;
+    border-radius: 8px;
+    background: #fffefa;
+    color: #233b32;
+    cursor: pointer;
+}
+.application-choice input { margin: 0 6px 0 0; }
+.application-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+.application-choice-grid legend { grid-column: 1 / -1; }
+.application-choice-grid label { width: 100%; min-width: 0; margin: 0; }
+.application-reason-field textarea {
+    width: 100%;
+    height: 112px;
+    min-height: 112px;
+    max-height: 112px;
+    resize: none;
+}
+.application-form-actions { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; }
+.application-aside { display: grid; gap: 12px; }
+.application-pet-card { overflow: hidden; border: 1px solid #dddfd5; border-radius: 12px; background: #fffefa; }
+.application-pet-card img { display: block; width: 100%; height: 180px; object-fit: cover; }
+.application-pet-card div { padding: 12px; }
+.application-pet-card strong,
+.application-pet-card span { display: block; }
+.application-pet-card span { margin-top: 4px; color: #6a6983; font-size: 10px; }
+.application-pet-card small { display: inline-block; margin-top: 8px; padding: 3px 8px; border-radius: 999px; background: #dcecdf; color: #2c6e49; font-size: 9px; }
+.application-aside h3 { margin: 4px 0 0; font-family: Georgia, serif; font-size: 18px; }
+.application-aside ol,
+.foster-includes { margin: 0; padding: 16px 16px 16px 34px; border: 1px solid #dddfd5; border-radius: 12px; background: #fffefa; }
+.application-aside li { padding: 5px 0; font-size: 11px; }
+.application-aside li b,
+.application-aside li span { display: block; }
+.application-aside li span { margin-top: 2px; color: #6a756e; }
+.foster-includes { list-style: none; }
+.foster-includes li::before { content: "✓"; margin-right: 8px; color: #24483e; }
+
+@media (max-width: 760px) {
+    .application-page { padding: 20px 16px 40px; }
+    .application-layout { grid-template-columns: 1fr; }
+    .application-grid { grid-template-columns: 1fr; }
+    .application-progress { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* ---------- Pet detail (viewbyid.php) ---------- */
 .pd { display: grid; gap: 28px; }
 

@@ -18,8 +18,8 @@ class Placement
     /** All placements with pet and person names. */
     public function getAll()
     {
-        return $this->conn->query(
-            "SELECT pl.*, p.name AS pet_name, u.full_name, u.email,
+        $placements = $this->conn->query(
+            "SELECT pl.*, p.name AS pet_name, p.photo_url, u.full_name, u.email,
                     r.full_name AS recorded_by_name
              FROM placement pl
              INNER JOIN pet p ON pl.petid = p.petid
@@ -27,6 +27,76 @@ class Placement
              LEFT JOIN user r ON pl.recorded_by = r.userid
              ORDER BY pl.placementid DESC"
         )->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($placements as &$placement){
+            $placement["record_source"] = "placement";
+        }
+        unset($placement);
+
+        $adoptions = $this->conn->query(
+            "SELECT a.adoptionid, a.userid, a.petid, a.application_date,
+                    a.status, u.full_name, u.email, p.name AS pet_name,
+                    p.photo_url, r.full_name AS recorded_by_name
+             FROM adoption a
+             INNER JOIN user u ON a.userid = u.userid
+             INNER JOIN pet p ON a.petid = p.petid
+             LEFT JOIN user r ON a.reviewed_by = r.userid
+             WHERE LOWER(COALESCE(a.status, '')) IN ('approved', 'active', 'completed')"
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($adoptions as $adoption){
+            $placements[] = [
+                "placementid" => -(int)$adoption["adoptionid"],
+                "userid" => (int)$adoption["userid"],
+                "petid" => (int)$adoption["petid"],
+                "placementtype" => "Adoption",
+                "start_date" => $adoption["application_date"],
+                "end_date" => null,
+                "status" => $adoption["status"] ?: "Active",
+                "pet_name" => $adoption["pet_name"],
+                "photo_url" => $adoption["photo_url"],
+                "full_name" => $adoption["full_name"],
+                "email" => $adoption["email"],
+                "recorded_by_name" => $adoption["recorded_by_name"],
+                "record_source" => "adoption"
+            ];
+        }
+
+        $fosters = $this->conn->query(
+            "SELECT f.fosterid, f.userid, f.petid, f.application_date,
+                    f.planned_start_date, f.planned_end_date, f.status,
+                    u.full_name, u.email, p.name AS pet_name, p.photo_url,
+                    r.full_name AS recorded_by_name
+             FROM foster f
+             INNER JOIN user u ON f.userid = u.userid
+             INNER JOIN pet p ON f.petid = p.petid
+             LEFT JOIN user r ON f.reviewed_by = r.userid
+             WHERE LOWER(COALESCE(f.status, '')) IN ('approved', 'active', 'completed')"
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($fosters as $foster){
+            $placements[] = [
+                "placementid" => -(int)$foster["fosterid"],
+                "userid" => (int)$foster["userid"],
+                "petid" => (int)$foster["petid"],
+                "placementtype" => "Foster",
+                "start_date" => $foster["planned_start_date"] ?: $foster["application_date"],
+                "end_date" => $foster["planned_end_date"],
+                "status" => $foster["status"] ?: "Active",
+                "pet_name" => $foster["pet_name"],
+                "photo_url" => $foster["photo_url"],
+                "full_name" => $foster["full_name"],
+                "email" => $foster["email"],
+                "recorded_by_name" => $foster["recorded_by_name"],
+                "record_source" => "foster"
+            ];
+        }
+
+        usort($placements, function($a, $b){
+            return strcmp((string)($b["start_date"] ?: ""), (string)($a["start_date"] ?: ""));
+        });
+
+        return $placements;
     }
 
     /** Users + pets + approved adoptions/fosters, for the "new placement" dropdowns. */

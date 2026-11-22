@@ -182,7 +182,6 @@ $total=count($pets);
                 <?php if(empty($pets)){ ?>
                 <div class="empty" id="emptyState">
                     <h3>No pets match</h3>
-                    <!-- <a href="dashboard.php">Reset filters</a> -->
                 </div>
                 <?php } ?>
             </section>

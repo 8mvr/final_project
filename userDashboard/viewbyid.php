@@ -148,12 +148,7 @@ if (!$pet) {
                 <p class="pd-meta">
                     <?php echo htmlspecialchars($pet["breed"]); ?>
                     · <?php echo htmlspecialchars($pet["age"]); ?>
-                    <?php 
-                    if($pet["age"] > 1){ 
-                        ?>years old<?php }
-                    else{
-                        ?>year old<?php
-                    } ?>
+                    <?php echo (int)$pet["age"] === 1 ? "year old" : "years old"; ?>
                     · <?php echo htmlspecialchars($pet["sex"]); ?>
                 </p>
 
@@ -163,10 +158,13 @@ if (!$pet) {
                     </span>
                 </div>
 
-                <?php if(strtolower($pet["status"]) !== "available") { ?>
-
+                <?php if(strtolower($pet["status"]) === "available") { ?>
+                    <div class="pd-actions">
+                        <a class="pd-btn pd-btn-primary" href="adoption_application.php?petid=<?php echo (int)$pet["petid"]; ?>">Apply to adopt</a>
+                        <a class="pd-btn pd-btn-secondary" href="foster_application.php?petid=<?php echo (int)$pet["petid"]; ?>">Offer a foster home</a>
+                    </div>
+                <?php } else { ?>
                     <p class="pd-unavailable">This pet is currently unavailable.</p>
-
                 <?php } ?>
 
             </div>
@@ -180,9 +178,15 @@ if (!$pet) {
         </section>
 
     </div>
+    <br>
 
 <?php } ?>
 </main>
-    <?php require __DIR__."/../includes/footer.php"; ?>
+    <?php if ($_SESSION["role"] === "admin") {
+        // require __DIR__."/../includes/footer.php";
+    }else{ 
+        require __DIR__."/../includes/footer.php";
+    } ?>
+    
 </body>
 </html>

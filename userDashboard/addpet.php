@@ -18,14 +18,21 @@ use app\Models\Pet;
 $petModel=new Pet();
 $error="";
 if(isset($_POST["submit"])){
-    $name=$_POST["name"];
-    $species=$_POST["species"];
-    $breed=$_POST["breed"];
-    $age=$_POST["age"];
-    $sex=$_POST["sex"];
-    $description=$_POST["description"];
-    $status=$_POST["status"];
+    $name=trim($_POST["name"] ?? "");
+    $species=trim($_POST["species"] ?? "");
+    $breed=trim($_POST["breed"] ?? "");
+    $age=isset($_POST["age"]) && $_POST["age"] !== "" ? (int)$_POST["age"] : 0;
+    $sex=$_POST["sex"] ?? "Male";
+    $description=trim($_POST["description"] ?? "");
+    $status=$_POST["status"] ?? "available";
 
+    if($name === "" || $species === ""){
+        $error="Pet name and species are required.";
+    }
+
+    if($error !== ""){
+        // Keep the form visible with the validation message.
+    }else{
     try{
         $photo_url=save_uploaded_photo() ?? "";
         $petModel->insert($_SESSION["email"],$name,$species,$breed,$age,$sex,$description,$photo_url,$status);
@@ -34,6 +41,7 @@ if(isset($_POST["submit"])){
     }
     catch(PDOException | RuntimeException $e){
         $error=$e->getMessage();
+    }
     }
 }
 
