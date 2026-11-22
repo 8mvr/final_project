@@ -144,7 +144,7 @@ input[type="submit"]:hover { background: #1c3a32; }
 
 .notice { max-width: 640px; margin: 0 0 16px; padding: 12px 14px; background: #f9e6e2; border: 1px solid #e8b9b2; border-radius: 10px; color: #b3423a; font-weight: 500; }
 
-form.pet-form { max-width: 640px; padding: 32px; line-height: 1.5; border-radius: 14px; }
+form.pet-form { max-width: 1560px; padding: 32px; line-height: 1.5; border-radius: 14px; }
 .pet-form .field { margin-bottom: 20px; }
 .pet-form .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .pet-form label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: #233b32; }
