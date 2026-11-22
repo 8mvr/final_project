@@ -13,7 +13,7 @@ $current = basename($_SERVER["SCRIPT_NAME"]);
             <a href="addpet.php" class="<?php echo $current === "addpet.php" ? "active" : "" ?>">Add pet</a>
         <?php } else { ?>
             <a href="dashboard.php" class="<?php echo $current === "dashboard.php" ? "active" : "" ?>">Find a pet</a>
-            <a href="dashboard.php">My applications</a>
+            <a href="myapplications.php" class="<?php echo $current === "myapplications.php" ? "active" : "" ?>">My applications</a>
         <?php } ?>
     </nav>
     <div class="nav-user">

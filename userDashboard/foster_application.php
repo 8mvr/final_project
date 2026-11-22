@@ -70,7 +70,6 @@ $src = photo_src($pet["photo_url"]);
             <a class="btn-back" href="dashboard.php">Back to pets</a>
         </section>
     <?php }else{ ?>
-        <a class="application-back" href="viewbyid.php?id=<?php echo (int)$petid; ?>">&larr; Back to <?php echo e($pet["name"]); ?>'s profile</a>
         <header class="application-page-head">
             <h1>Open your home for a little while</h1>
             <p>Foster families give pets a calm place to decompress, heal, or wait for adoption.</p>
@@ -82,35 +81,40 @@ $src = photo_src($pet["photo_url"]);
             <form class="application-form" method="POST">
                 <input type="hidden" name="action" value="submit_foster">
                 <input type="hidden" name="petid" value="<?php echo (int)$petid; ?>">
+                <h2>Foster plan</h2>
 
-                <fieldset class="application-choice"><legend>Type of foster care</legend><label><input type="radio" name="care_type" value="Short-term" checked> Short-term (2–4 weeks)</label><label><input type="radio" name="care_type" value="Medical"> Medical recovery</label><label><input type="radio" name="care_type" value="Uncertain"> Until adapted</label></fieldset>
+                <fieldset class="application-choice application-choice-grid"><legend>Type of foster care</legend><label><input type="radio" name="care_type" value="Short-term" checked> Short-term</label><label><input type="radio" name="care_type" value="Medical"> Medical recovery</label><label><input type="radio" name="care_type" value="Uncertain"> Until adapted</label></fieldset>
 
-                <fieldset class="application-choice"><legend>Animals in your home</legend><label><input type="checkbox" name="animals[]" value="Dogs" checked> Dogs</label><label><input type="checkbox" name="animals[]" value="Cats"> Cats</label><label><input type="checkbox" name="animals[]" value="Small pets"> Small pets</label><label><input type="checkbox" name="animals[]" value="None"> No other pets</label></fieldset>
+                <fieldset class="application-choice application-choice-grid"><legend>Animals in your home</legend><label><input type="checkbox" name="animals[]" value="Dogs" checked> Dogs</label><label><input type="checkbox" name="animals[]" value="Cats"> Cats</label><label><input type="checkbox" name="animals[]" value="Small pets"> Small pets</label><label><input type="checkbox" name="animals[]" value="None"> No other pets</label></fieldset>
 
                 <div class="application-grid">
-                    <label>How long can you foster?<select name="duration"><option>Up to 4 weeks</option><option>1–3 months</option><option>Until adoption</option></select></label>
-                    <label>Earliest start date<input type="date" name="start_date" required></label>
+                    <label>Foster start date<input type="date" name="start_date" required></label>
+                    <label>Foster end date<input type="date" name="end_date" required></label>
                 </div>
 
                 <div class="application-grid">
                     <label>Type of home<select name="home_type"><option>Apartment</option><option>House</option><option>Townhouse</option><option>Condo</option></select></label>
                     <label>Pets allowed at home<select name="pets_allowed"><option>Yes, with notice</option><option>Yes</option><option>No</option></select></label>
                 </div>
+                
+                <label class="application-reason-field">Why do you want to foster <?php echo e($pet["name"]); ?>?<textarea name="reason" rows="4"></textarea></label>
 
-                <label>Foster end date<input type="date" name="end_date" required></label>
-
-                <label>Why do you want to foster <?php echo e($pet["name"]); ?>?<textarea name="reason" rows="4"></textarea></label>
-
-                <div class="application-form-actions"><a class="btn-cancel" href="viewbyid.php?id=<?php echo (int)$petid; ?>">Back</a><button type="submit" class="btn-dark">Submit foster application</button></div>
+                <div class="application-form-actions"><button type="submit" class="btn-dark">Submit foster application</button></div>
             </form>
 
             <aside class="application-aside">
-                <div class="application-pet-card"><?php if($src){ ?><img src="<?php echo e($src); ?>" alt="<?php echo e($pet["name"]); ?>"><?php } ?><div><strong><?php echo e($pet["name"]); ?></strong><span><?php echo e($pet["breed"]); ?> · <?php echo (int)$pet["age"]; ?> <?php echo (int)$pet["age"] === 1 ? "year old" : "years old"; ?></span></div></div>
-                <h3>What fostering includes</h3>
-                <ul class="foster-includes"><li>Food, supplies, and vet care covered</li><li>A foster coordinator for support</li><li>Flexible handoff and return plans</li></ul>
+                <div class="application-pet-card">
+                    <?php if($src){ ?><img src="<?php echo e($src); ?>" alt="<?php echo e($pet["name"]); ?>"><?php } ?>
+                    <div>
+                        <strong><?php echo e($pet["name"]); ?></strong>
+                        <span><?php echo e($pet["breed"]); ?> · <?php echo (int)$pet["age"]; ?> <?php echo (int)$pet["age"] === 1 ? "year old" : "years old"; ?> · <?php echo e($pet["sex"]); ?></span>
+                        <small><?php echo e($pet["status"]); ?></small>
+                    </div>
+                </div>
             </aside>
         </div>
     <?php } ?>
 </main>
+<?php require __DIR__."/../includes/footer.php"; ?>
 </body>
 </html>

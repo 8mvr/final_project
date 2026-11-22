@@ -98,7 +98,7 @@ $src = photo_src($pet["photo_url"]);
 
                 <label class="application-reason-field">Why would <?php echo e($pet["name"]); ?> be a good match?<textarea name="reason" rows="5" required><?php echo e($_POST["reason"] ?? ""); ?></textarea></label>
 
-                <div class="application-form-actions"><a class="btn-cancel" href="viewbyid.php?id=<?php echo (int)$petid; ?>">Back</a><button type="submit" class="btn-dark">Submit application</button></div>
+                <div class="application-form-actions"><button type="submit" class="btn-dark">Submit application</button></div>
             </form>
 
             <aside class="application-aside">
