@@ -28,18 +28,34 @@ if(!$pet){
 
 $error = "";
 $submitted = false;
+$appointmentInput = $_POST["appointment_datetime"] ?? "";
 if(($_POST["action"] ?? "") === "submit_adoption"){
     $reason = trim($_POST["reason"] ?? "");
+    $appointment = DateTime::createFromFormat("!Y-m-d\TH:i", $appointmentInput);
+    $dateErrors = DateTime::getLastErrors();
     $auth = new Authentication();
     $user = $auth->findByEmail($_SESSION["email"]);
 
     if($reason === ""){
         $error = "Please tell us why Maple would be a good fit for your home.";
+    }elseif(
+        !$appointment
+        || ($dateErrors !== false && ($dateErrors["warning_count"] > 0 || $dateErrors["error_count"] > 0))
+        || $appointment->format("Y-m-d\TH:i") !== $appointmentInput
+    ){
+        $error = "Please choose a valid appointment date and time.";
+    }elseif($appointment <= new DateTime()){
+        $error = "The appointment date and time must be in the future.";
     }elseif(!$user){
         $error = "Your account could not be found.";
     }else{
         try{
-            (new Application())->insertAdoption($petid, (int)$user["userid"], $reason);
+            (new Application())->insertAdoption(
+                $petid,
+                (int)$user["userid"],
+                $reason,
+                $appointment->format("Y-m-d H:i:s")
+            );
             $submitted = true;
         }catch(PDOException $ex){
             $error = $ex->getMessage();
@@ -65,6 +81,7 @@ $src = photo_src($pet["photo_url"]);
         <section class="app-success">
             <h1>Application submitted</h1>
             <p>Your adoption application for <?php echo e($pet["name"]); ?> is pending review.</p>
+            <p>Visit appointment: <?php echo e($appointment->format("M j, Y \\a\\t g:i A")); ?></p>
             <a class="btn-back" href="dashboard.php">Back to pets</a>
         </section>
     <?php }else{ ?>
@@ -95,6 +112,8 @@ $src = photo_src($pet["photo_url"]);
                 </div>
 
                 <fieldset class="application-choice application-choice-grid"><legend>Is your home fenced?</legend><label><input type="radio" name="fenced" value="Yes"> Yes</label><label><input type="radio" name="fenced" value="No" checked> No</label></fieldset>
+
+                <label>Appointment date and time<input type="datetime-local" name="appointment_datetime" min="<?php echo e(date("Y-m-d\\TH:i")); ?>" value="<?php echo e($appointmentInput); ?>" required></label>
 
                 <label class="application-reason-field">Why would <?php echo e($pet["name"]); ?> be a good match?<textarea name="reason" rows="5" required><?php echo e($_POST["reason"] ?? ""); ?></textarea></label>
 

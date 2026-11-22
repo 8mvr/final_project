@@ -47,8 +47,8 @@ CREATE TABLE `appointment` (
   `appointmentid` int NOT NULL,
   `userid` int NOT NULL,
   `petid` int NOT NULL,
-  `adoptionid` int NOT NULL,
-  `fosterid` int NOT NULL,
+  `adoptionid` int DEFAULT NULL,
+  `fosterid` int DEFAULT NULL,
   `appointment_datetime` datetime DEFAULT NULL,
   `purpose` varchar(250) DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL
@@ -100,8 +100,8 @@ CREATE TABLE `placement` (
   `placementid` int NOT NULL,
   `userid` int NOT NULL,
   `petid` int NOT NULL,
-  `adoptionid` int NOT NULL,
-  `fosterid` int NOT NULL,
+  `adoptionid` int DEFAULT NULL,
+  `fosterid` int DEFAULT NULL,
   `recorded_by` int NOT NULL,
   `placementtype` varchar(50) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
@@ -155,7 +155,7 @@ ALTER TABLE `adoption`
 -- Indexes for table `appointment`
 --
 ALTER TABLE `appointment`
-  ADD PRIMARY KEY (`appointmentid`,`userid`,`petid`,`adoptionid`,`fosterid`),
+  ADD PRIMARY KEY (`appointmentid`),
   ADD KEY `userid` (`userid`),
   ADD KEY `petid` (`petid`),
   ADD KEY `adoptionid` (`adoptionid`),
@@ -181,7 +181,7 @@ ALTER TABLE `pet`
 -- Indexes for table `placement`
 --
 ALTER TABLE `placement`
-  ADD PRIMARY KEY (`placementid`,`userid`,`petid`,`adoptionid`,`fosterid`,`recorded_by`),
+  ADD PRIMARY KEY (`placementid`),
   ADD KEY `userid` (`userid`),
   ADD KEY `petid` (`petid`),
   ADD KEY `adoptionid` (`adoptionid`),

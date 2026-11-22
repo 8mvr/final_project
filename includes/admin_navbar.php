@@ -16,7 +16,6 @@ try{
     <nav class="admin-side-nav" aria-label="Admin navigation">
         <a href="admin.php" class="<?php echo $current === "admin.php" ? "active" : "" ?>" <?php echo $current === "admin.php" ? 'aria-current="page"' : "" ?>>Dashboard</a>
         <a href="applications.php" class="<?php echo $current === "applications.php" ? "active" : "" ?>" <?php echo $current === "applications.php" ? 'aria-current="page"' : "" ?>>Applications</a>
-        <a href="">Appointments</a>
         <a href="placements.php" class="<?php echo $current === "placements.php" ? "active" : "" ?>" <?php echo $current === "placements.php" ? 'aria-current="page"' : "" ?>>Placements</a>
         <a href="users.php" class="<?php echo $current === "users.php" ? "active" : "" ?>" <?php echo $current === "users.php" ? 'aria-current="page"' : "" ?>>Users</a>
     </nav>

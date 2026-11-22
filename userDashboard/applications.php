@@ -46,7 +46,10 @@ if(($_POST["action"] ?? "") === "review"){
                 $error = "Invalid application type.";
             }
 
-            if($error === ""){
+            if($error === "" && $status === "Approved"){
+                header("Location:placements.php?application_kind=".urlencode($kind)."&application_id=".$id);
+                exit();
+            }elseif($error === ""){
                 $message = "Application $status successfully.";
             }
         }catch(PDOException $ex){
@@ -75,6 +78,7 @@ foreach($adoptions as $application){
         "pet_name" => $application["pet_name"],
         "photo_url" => $application["photo_url"],
         "application_date" => $application["application_date"],
+        "appointment_datetime" => $application["appointment_datetime"] ?? null,
         "status" => $application["status"] ?: "Pending",
         "reason" => $application["reason"] ?? "",
         "reviewed_by_name" => $application["reviewed_by_name"] ?? null
@@ -171,6 +175,7 @@ $pendingCount = count(array_filter($applications, fn($app) => strcasecmp($app["s
                             <span class="application-status <?php echo e($statusClass); ?>"><?php echo e($application["status"]); ?></span>
                         </div>
                         <p class="application-meta"><?php echo e($application["reference"]); ?> · <?php echo e($application["pet_name"]); ?> · <?php echo e($application["kind"]); ?> application</p>
+                        <?php if(!empty($application["appointment_datetime"])){ ?><p class="application-meta">Visit appointment: <?php echo e(date("M j, Y \\a\\t g:i A", strtotime($application["appointment_datetime"]))); ?></p><?php } ?>
                         <div class="application-reason"><?php echo e($application["reason"]); ?></div>
                         <?php if(strcasecmp($application["status"], "Pending") === 0){ ?>
                             <div class="application-actions">
