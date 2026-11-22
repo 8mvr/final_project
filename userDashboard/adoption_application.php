@@ -68,7 +68,7 @@ $src = photo_src($pet["photo_url"]);
             <a class="btn-back" href="dashboard.php">Back to pets</a>
         </section>
     <?php }else{ ?>
-        <a class="application-back" href="viewbyid.php?id=<?php echo (int)$petid; ?>">&larr; Back to <?php echo e($pet["name"]); ?>'s profile</a>
+        <a class="application-back" href="viewbyid.php?id=<?php echo (int)$petid; ?>">Back to <?php echo e($pet["name"]); ?>'s profile</a>
         <header class="application-page-head">
             <h1>Tell us about your home</h1>
             <p>A few honest answers help us find the right match for you and <?php echo e($pet["name"]); ?>.</p>

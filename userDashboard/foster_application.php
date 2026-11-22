@@ -70,6 +70,7 @@ $src = photo_src($pet["photo_url"]);
             <a class="btn-back" href="dashboard.php">Back to pets</a>
         </section>
     <?php }else{ ?>
+    <a class="application-back" href="viewbyid.php?id=<?php echo (int)$petid; ?>">Back to <?php echo e($pet["name"]); ?>'s profile</a>
         <header class="application-page-head">
             <h1>Open your home for a little while</h1>
             <p>Foster families give pets a calm place to decompress, heal, or wait for adoption.</p>
