@@ -143,7 +143,7 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Placement records · Hearth</title>
     <link rel="stylesheet" href="../assets/css/pet.css">
-    <link rel="stylesheet" href="../assets/css/admin.css?v=2">
+    <link rel="stylesheet" href="../assets/css/admin.css?v=3">
 </head>
 <body>
 <div class="admin-layout">
@@ -152,7 +152,6 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
         <header class="top placements-top">
             <div>
                 <h1>Placement records</h1>
-                <p>Every adoption and foster placement, with follow-up dates.</p>
             </div>
         </header>
 
@@ -175,11 +174,11 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
             <div class="form-actions"><input type="submit" value="Save placement"><button type="button" class="btn-light" onclick="document.getElementById('placementForm').hidden=true;">Cancel</button></div>
         </form>
 
-        <section class="placement-stats">
-            <div class="placement-stat"><span>Total placements</span><b><?php echo $totalPlacements; ?></b></div>
-            <div class="placement-stat"><span>Active placements</span><b><?php echo $active; ?></b></div>
-            <div class="placement-stat"><span>Follow-ups due this week</span><b>0</b></div>
-            <div class="placement-stat"><span>Completed placements</span><b><?php echo count(array_filter($placements, fn($p) => strcasecmp((string)$p["status"], "Completed") === 0)); ?></b></div>
+        <section class="stats">
+            <div class="stat"><span>Total placements</span><b><?php echo $totalPlacements; ?></b></div>
+            <div class="stat"><span>Active placements</span><b><?php echo $active; ?></b></div>
+            <div class="stat"><span>Follow-ups due this week</span><b>0</b></div>
+            <div class="stat"><span>Completed placements</span><b><?php echo count(array_filter($placements, fn($p) => strcasecmp((string)$p["status"], "Completed") === 0)); ?></b></div>
         </section>
 
         <section class="card placements-card">
@@ -193,10 +192,10 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
 
             <div class="table-wrap placements-table-wrap">
                 <table class="placements-table">
-                    <thead><tr><th>Record</th><th>Pet</th><th>Placed with</th><th>Type</th><th>Placed on</th><th>Follow-up</th><th>Appointment</th><th>Status</th><th>Actions</th></tr></thead>
+                    <thead><tr><th>Record</th><th>Pet</th><th>Placed with</th><th>Type</th><th>Placed on</th><th>Follow-up</th><th>Appointment</th><th>Status</th></tr></thead>
                     <tbody>
                     <?php if(empty($filtered)){ ?>
-                        <tr><td colspan="9" class="empty">No placement records yet.</td></tr>
+                        <tr><td colspan="8" class="empty">No placement records yet.</td></tr>
                     <?php }else{ foreach($filtered as $placement){
                         $src = photo_src($placement["photo_url"] ?? null);
                         $status = $placement["status"] ?: "Active";
@@ -213,7 +212,6 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
                             <td><?php echo $placement["end_date"] ? e(date("M j, Y", strtotime($placement["end_date"]))) : "—"; ?></td>
                             <td><?php echo !empty($placement["appointment_datetime"]) ? e(date("M j, Y g:i A", strtotime($placement["appointment_datetime"]))) : "—"; ?></td>
                             <td><span class="placement-status <?php echo strtolower($status); ?>"><?php echo e($status); ?></span></td>
-                            <td><a class="btn-light btn-sm" href="placements.php?view=<?php echo (int)$placement["placementid"]; ?>">View</a></td>
                         </tr>
                     <?php }} ?>
                     </tbody>

@@ -179,60 +179,6 @@ td strong { color: #233b32; }
 .placements-main { width: 100%; }
 .placements-top { align-items: center; }
 .placements-top .btn-dark { border: 0; cursor: pointer; }
-.placements-stats {
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 16px;
-    margin-bottom: 20px;
-    width: 100%;
-}
-.placement-stat {
-    width: 100%;
-    height: 150px;
-    box-sizing: border-box;
-    padding: 18px 20px;
-    border: 1px solid #e4e1d6;
-    border-radius: 14px;
-    background: #fffefa;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-.placement-stat span {
-    display: block;
-    font-size: 11px;
-    color: #6a756e;
-}
-.placement-stat b {
-    display: block;
-    margin: 8px 0 6px;
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight: 400;
-    font-size: 38px;
-    line-height: 1;
-    color: #1f3f3d;
-}
-.placement-stat small {
-    display: block;
-    font-size: 10px;
-    color: #6a756e;
-}
-@media (max-width: 700px) {
-    .placements-stats {
-        gap: 8px;
-    }
-    .placement-stat {
-        height: 110px;
-        padding: 14px 6px;
-        border-radius: 14px;
-    }
-    .placement-stat span { font-size: 10.5px; }
-    .placement-stat b { font-size: 30px; }
-    .placement-stat small { font-size: 9px; }
-}
-
 .placement-form {
     display: grid;
     margin: 0 0 18px;
@@ -255,7 +201,7 @@ td strong { color: #233b32; }
     font: inherit;
     color: #233b32;
 }
-.placements-card { margin-top: 24px; padding: 16px 18px 18px; }
+.placements-card { padding: 20px; }
 .placements-toolbar { display: flex; align-items: center; margin-bottom: 14px; }
 .placements-tabs { display: flex; gap: 4px; }
 .placements-tabs a {
@@ -272,8 +218,7 @@ td strong { color: #233b32; }
 .placements-table { width: 100%; table-layout: fixed; }
 .placements-table th,
 .placements-table td { text-align: left; }
-.placements-table th:last-child,
-.placements-table td:last-child { text-align: center; }
+
 .placement-pet { display: flex; align-items: center; gap: 8px; }
 .placement-photo { width: 34px; height: 34px; display: inline-grid; place-items: center; overflow: hidden; border-radius: 50%; background: #eef1e8; }
 .placement-photo img { width: 100%; height: 100%; object-fit: cover; }
