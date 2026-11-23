@@ -24,6 +24,25 @@ class Pet{
         $pet=$stmt->fetchAll(PDO::FETCH_ASSOC);
         return $pet;
     }
+    public function getForUserDashboard(){
+        $sql="SELECT pet.*, user.full_name AS creator_name
+              FROM pet
+              INNER JOIN user ON pet.created_by = user.userid
+              WHERE LOWER(TRIM(COALESCE(pet.status, ''))) IN ('available', 'foster')
+                AND NOT EXISTS (
+                    SELECT 1 FROM adoption
+                    WHERE adoption.petid = pet.petid
+                      AND LOWER(TRIM(COALESCE(adoption.status, ''))) = 'approved'
+                )
+                AND NOT EXISTS (
+                    SELECT 1 FROM foster
+                    WHERE foster.petid = pet.petid
+                      AND LOWER(TRIM(COALESCE(foster.status, ''))) = 'approved'
+                )";
+        $stmt=$this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     public function insert($created_by, $name, $species, $breed, $age, $sex, $description, $photo_url, $status){
         $sql="INSERT INTO pet(created_by,name,species,breed,age,sex,description,photo_url,status) SELECT userid,?,?,?,?,?,?,?,? FROM user WHERE email=?";
         $stmt=$this->conn->prepare($sql);

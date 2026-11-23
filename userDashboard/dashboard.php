@@ -19,7 +19,7 @@ $pets=[];
 $error="";
 try{
     $petModel=new Pet();
-    $pets=$petModel->getAll();
+    $pets=$petModel->getForUserDashboard();
 }
 catch(PDOException $e){
     $error="We couldn't load the pets right now. Please try again in a moment.";

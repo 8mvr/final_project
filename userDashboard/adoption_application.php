@@ -25,6 +25,10 @@ if(!$pet){
     header("Location:dashboard.php");
     exit();
 }
+if(strtolower(trim((string)$pet["status"])) !== "available"){
+    header("Location:viewbyid.php?id=".$petid);
+    exit();
+}
 
 $error = "";
 $submitted = false;

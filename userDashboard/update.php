@@ -24,7 +24,6 @@ if(isset($_POST["update"])){
     $age=(int)($_POST["age"] ?? 0);
     $sex=$_POST["sex"] ?? "Male";
     $description=trim($_POST["description"] ?? "");
-    $status=$_POST["status"] ?? "Available";
 
     if($id <= 0 || $name === "" || $species === ""){
         header("Location:admin.php?err=" . urlencode("Pet name and species are required."));
@@ -32,10 +31,27 @@ if(isset($_POST["update"])){
     }
 
     try{
+        $existing=$petModel->ViewbyID($id);
+        if(!$existing){
+            header("Location:admin.php?err=" . urlencode("Pet not found."));
+            exit();
+        }
+
+        $submittedStatus=trim((string)($_POST["status"] ?? ""));
+        if($submittedStatus === ""){
+            $status=$existing["status"];
+        }else{
+            $normalizedStatus=strtolower($submittedStatus);
+            if(!in_array($normalizedStatus, ["available", "foster"], true)){
+                header("Location:admin.php?err=" . urlencode("Invalid pet status."));
+                exit();
+            }
+            $status=$normalizedStatus === "available" ? "Available" : "Foster";
+        }
+
         // New upload replaces the photo; otherwise keep the existing one
         $photo_url=save_uploaded_photo();
         if($photo_url===null){
-            $existing=$petModel->ViewbyID($id);
             $photo_url=$existing["photo_url"] ?? "";
         }
         $petModel->update($name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id);

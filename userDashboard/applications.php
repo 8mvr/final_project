@@ -33,6 +33,9 @@ if(($_POST["action"] ?? "") === "review"){
 
     if(!in_array($status, ["Approved", "Rejected"], true)){
         $error = "Invalid review status.";
+    }elseif($status === "Approved" && in_array($kind, ["adoption", "foster"], true) && $id > 0){
+        header("Location:placements.php?application_kind=".urlencode($kind)."&application_id=".$id);
+        exit();
     }else{
         try{
             $admin = $authModel->findByEmail($_SESSION["email"]);
@@ -46,10 +49,7 @@ if(($_POST["action"] ?? "") === "review"){
                 $error = "Invalid application type.";
             }
 
-            if($error === "" && $status === "Approved"){
-                header("Location:placements.php?application_kind=".urlencode($kind)."&application_id=".$id);
-                exit();
-            }elseif($error === ""){
+            if($error === ""){
                 $message = "Application $status successfully.";
             }
         }catch(PDOException $ex){
@@ -94,6 +94,7 @@ foreach($fosters as $application){
         "pet_name" => $application["pet_name"],
         "photo_url" => $application["photo_url"],
         "application_date" => $application["application_date"],
+        "appointment_datetime" => $application["appointment_datetime"] ?? null,
         "status" => $application["status"] ?: "Pending",
         "reason" => "Foster period: ".($application["planned_start_date"] ?: "?")." to ".($application["planned_end_date"] ?: "?"),
         "reviewed_by_name" => $application["reviewed_by_name"] ?? null

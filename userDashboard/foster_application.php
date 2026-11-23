@@ -24,12 +24,20 @@ if(!$pet){
     header("Location:dashboard.php");
     exit();
 }
+$petStatus = strtolower(trim((string)$pet["status"]));
+if(!in_array($petStatus, ["available", "foster"], true)){
+    header("Location:viewbyid.php?id=".$petid);
+    exit();
+}
 
 $error = "";
 $submitted = false;
+$appointmentInput = $_POST["appointment_datetime"] ?? "";
 if(($_POST["action"] ?? "") === "submit_foster"){
     $startDate = $_POST["start_date"] ?? "";
     $endDate = $_POST["end_date"] ?? "";
+    $appointment = DateTime::createFromFormat("!Y-m-d\TH:i", $appointmentInput);
+    $dateErrors = DateTime::getLastErrors();
     $auth = new Authentication();
     $user = $auth->findByEmail($_SESSION["email"]);
 
@@ -37,11 +45,25 @@ if(($_POST["action"] ?? "") === "submit_foster"){
         $error = "Please choose both a start and end date.";
     }elseif($endDate < $startDate){
         $error = "The end date must be after the start date.";
+    }elseif(
+        !$appointment
+        || ($dateErrors !== false && ($dateErrors["warning_count"] > 0 || $dateErrors["error_count"] > 0))
+        || $appointment->format("Y-m-d\TH:i") !== $appointmentInput
+    ){
+        $error = "Please choose a valid appointment date and time.";
+    }elseif($appointment <= new DateTime()){
+        $error = "The appointment date and time must be in the future.";
     }elseif(!$user){
         $error = "Your account could not be found.";
     }else{
         try{
-            (new Application())->insertFoster($petid, (int)$user["userid"], $startDate, $endDate);
+            (new Application())->insertFoster(
+                $petid,
+                (int)$user["userid"],
+                $startDate,
+                $endDate,
+                $appointment->format("Y-m-d H:i:s")
+            );
             $submitted = true;
         }catch(PDOException $ex){
             $error = $ex->getMessage();
@@ -67,6 +89,7 @@ $src = photo_src($pet["photo_url"]);
         <section class="app-success">
             <h1>Foster application submitted</h1>
             <p>Your foster request for <?php echo e($pet["name"]); ?> is pending review.</p>
+            <p>Visit appointment: <?php echo e($appointment->format("M j, Y \\a\\t g:i A")); ?></p>
             <a class="btn-back" href="dashboard.php">Back to pets</a>
         </section>
     <?php }else{ ?>
@@ -87,6 +110,8 @@ $src = photo_src($pet["photo_url"]);
                 <fieldset class="application-choice application-choice-grid"><legend>Type of foster care</legend><label><input type="radio" name="care_type" value="Short-term" checked> Short-term</label><label><input type="radio" name="care_type" value="Medical"> Medical recovery</label><label><input type="radio" name="care_type" value="Uncertain"> Until adapted</label></fieldset>
 
                 <fieldset class="application-choice application-choice-grid"><legend>Animals in your home</legend><label><input type="checkbox" name="animals[]" value="Dogs" checked> Dogs</label><label><input type="checkbox" name="animals[]" value="Cats"> Cats</label><label><input type="checkbox" name="animals[]" value="Small pets"> Small pets</label><label><input type="checkbox" name="animals[]" value="None"> No other pets</label></fieldset>
+
+                <label>Appointment date and time<input type="datetime-local" name="appointment_datetime" min="<?php echo e(date("Y-m-d\\TH:i")); ?>" value="<?php echo e($appointmentInput); ?>" required></label>
 
                 <div class="application-grid">
                     <label>Foster start date<input type="date" name="start_date" required></label>

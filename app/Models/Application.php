@@ -31,7 +31,7 @@ class Application
 
             $appointment = $this->conn->prepare(
                 "INSERT INTO appointment(userid, petid, adoptionid, fosterid, appointment_datetime, purpose, status)
-                 VALUES (?, ?, ?, NULL, ?, 'Adoption visit', 'Scheduled')"
+                 VALUES (?, ?, ?, NULL, ?, 'Adoption visit', 'Pending')"
             );
             $appointment->execute([$userid, $petid, $adoptionid, $appointmentDatetime]);
 
@@ -47,14 +47,31 @@ class Application
 
     /**
      * Insert a foster application into the existing `foster` table.
-     * ($petid, $userid, $planned_start_date, $planned_end_date)
+     * ($petid, $userid, $planned_start_date, $planned_end_date, $appointment_datetime)
      */
-    public function insertFoster($petid, $userid, $planned_start_date, $planned_end_date)
+    public function insertFoster($petid, $userid, $planned_start_date, $planned_end_date, $appointment_datetime)
     {
-        $sql = "INSERT INTO foster(userid, petid, application_date, planned_start_date, planned_end_date, status)
-                VALUES (?, ?, CURDATE(), ?, ?, 'Pending')";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$userid, $petid, $planned_start_date, $planned_end_date]);
+        $this->conn->beginTransaction();
+        try{
+            $sql = "INSERT INTO foster(userid, petid, application_date, planned_start_date, planned_end_date, status)
+                    VALUES (?, ?, CURDATE(), ?, ?, 'Pending')";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$userid, $petid, $planned_start_date, $planned_end_date]);
+            $fosterid = (int)$this->conn->lastInsertId();
+
+            $appointment = $this->conn->prepare(
+                "INSERT INTO appointment(userid, petid, adoptionid, fosterid, appointment_datetime, purpose, status)
+                 VALUES (?, ?, NULL, ?, ?, 'Foster visit', 'Pending')"
+            );
+            $appointment->execute([$userid, $petid, $fosterid, $appointment_datetime]);
+
+            $this->conn->commit();
+        }catch(\Throwable $error){
+            if($this->conn->inTransaction()){
+                $this->conn->rollBack();
+            }
+            throw $error;
+        }
         return "Application submitted";
     }
 
@@ -129,30 +146,32 @@ class Application
     {
         return $this->conn->query(
             "SELECT f.*, u.full_name, u.email, p.name AS pet_name, p.photo_url,
+                    ap.appointment_datetime,
                     r.full_name AS reviewed_by_name
              FROM foster f
              INNER JOIN user u ON f.userid = u.userid
              INNER JOIN pet p ON f.petid = p.petid
+             LEFT JOIN appointment ap ON ap.fosterid = f.fosterid
              LEFT JOIN user r ON f.reviewed_by = r.userid
              ORDER BY f.application_date DESC, f.fosterid DESC"
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /** Approved application details for a prefilled placement form. */
-    public function approvedPlacementDetails($kind, $id)
+    /** Pending or approved application details for a prefilled placement form. */
+    public function placementApplicationDetails($kind, $id)
     {
         if($kind === "adoption"){
             $sql = "SELECT a.userid, a.petid, a.application_date AS start_date, NULL AS end_date,
                            'Adoption' AS placementtype, ap.appointment_datetime
                     FROM adoption a
                     LEFT JOIN appointment ap ON ap.adoptionid = a.adoptionid
-                    WHERE a.adoptionid=? AND LOWER(COALESCE(a.status, ''))='approved'";
+                    WHERE a.adoptionid=? AND LOWER(COALESCE(a.status, '')) IN ('pending', 'approved')";
         }elseif($kind === "foster"){
             $sql = "SELECT f.userid, f.petid, f.planned_start_date AS start_date, f.planned_end_date AS end_date,
                            'Foster' AS placementtype, ap.appointment_datetime
                     FROM foster f
                     LEFT JOIN appointment ap ON ap.fosterid = f.fosterid
-                    WHERE f.fosterid=? AND LOWER(COALESCE(f.status, ''))='approved'";
+                    WHERE f.fosterid=? AND LOWER(COALESCE(f.status, '')) IN ('pending', 'approved')";
         }else{
             return null;
         }

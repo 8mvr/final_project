@@ -46,6 +46,7 @@ if (!$pet) {
     <div class="admin-layout">
     <?php require __DIR__."/../includes/admin_navbar.php"; ?>
     <main class="page">
+        <?php $editableStatus = strtolower(trim((string)$pet["status"])); ?>
         <div class="page-head">
             <h1>Edit pet</h1>
             <p>Update <?php echo htmlspecialchars($pet["name"]) ?>'s details. Changes are visible to users right away.</p>
@@ -87,9 +88,9 @@ if (!$pet) {
                 <div class="field">
                     <label for="status">Status</label>
                     <select id="status" name="status">
-                        <option value="Available" <?php if(strcasecmp($pet["status"],"Available")===0) echo "selected"; ?>>Available</option>
-                        <option value="Foster" <?php if(strcasecmp($pet["status"],"Foster")===0) echo "selected"; ?>>Foster</option>
-                        <option value="Not Available" <?php if(strcasecmp($pet["status"],"Not Available")===0) echo "selected"; ?>>Not Available</option>
+                        <option value="" disabled <?php echo in_array($editableStatus, ["available", "foster"], true) ? "" : "selected"; ?>>Choose a status</option>
+                        <option value="Available" <?php echo $editableStatus === "available" ? "selected" : ""; ?>>Available</option>
+                        <option value="Foster" <?php echo $editableStatus === "foster" ? "selected" : ""; ?>>Foster</option>
                     </select>
                 </div>
             </div>
@@ -127,6 +128,7 @@ if (!$pet) {
     <div class="pd">
 
         <?php $src = photo_src($pet["photo_url"]); ?>
+        <?php $petStatus = strtolower(trim((string)$pet["status"])); ?>
 
         <section class="pd-hero">
 
@@ -153,14 +155,18 @@ if (!$pet) {
                 </p>
 
                 <div class="pd-badges">
-                    <span class="pd-badge <?php echo strtolower($pet["status"]) === "available" ? "pd-badge-green" : "pd-badge-grey"; ?>">
+                    <span class="pd-badge <?php echo $petStatus === "available" ? "pd-badge-green" : "pd-badge-grey"; ?>">
                         <?php echo htmlspecialchars($pet["status"]); ?>
                     </span>
                 </div>
 
-                <?php if(strtolower($pet["status"]) === "available") { ?>
+                <?php if($petStatus === "available") { ?>
                     <div class="pd-actions">
                         <a class="pd-btn pd-btn-primary" href="adoption_application.php?petid=<?php echo (int)$pet["petid"]; ?>">Apply to adopt</a>
+                        <a class="pd-btn pd-btn-secondary" href="foster_application.php?petid=<?php echo (int)$pet["petid"]; ?>">Offer a foster home</a>
+                    </div>
+                <?php } elseif($petStatus === "foster") { ?>
+                    <div class="pd-actions">
                         <a class="pd-btn pd-btn-secondary" href="foster_application.php?petid=<?php echo (int)$pet["petid"]; ?>">Offer a foster home</a>
                     </div>
                 <?php } else { ?>

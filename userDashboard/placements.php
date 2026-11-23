@@ -34,9 +34,9 @@ $appointmentInput = $_POST["appointment_datetime"] ?? "";
 
 if($selectedApplicationId > 0){
     try{
-        $selectedApplication = $appModel->approvedPlacementDetails($selectedApplicationKind, $selectedApplicationId);
+        $selectedApplication = $appModel->placementApplicationDetails($selectedApplicationKind, $selectedApplicationId);
         if(!$selectedApplication){
-            $error = "Approved application not found.";
+            $error = "Application not found or no longer available for placement.";
         }
     }catch(PDOException $ex){
         $error = $ex->getMessage();
@@ -101,7 +101,7 @@ if(($_POST["action"] ?? "") === "create"){
                 exit();
             }
             $message = "Placement and appointment recorded successfully.";
-        }catch(PDOException $ex){
+        }catch(PDOException | RuntimeException $ex){
             $error = $ex->getMessage();
         }
     }
@@ -171,7 +171,7 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
                 <label>Appointment date and time<input type="datetime-local" name="appointment_datetime" min="<?php echo e(date("Y-m-d\\TH:i")); ?>" value="<?php echo e($appointmentInput); ?>" required></label>
                 <label>Status<select name="status"><option <?php echo ($_POST["status"] ?? "Active") === "Active" ? "selected" : ""; ?>>Active</option><option <?php echo ($_POST["status"] ?? "") === "Scheduled" ? "selected" : ""; ?>>Scheduled</option><option <?php echo ($_POST["status"] ?? "") === "Completed" ? "selected" : ""; ?>>Completed</option><option <?php echo ($_POST["status"] ?? "") === "Returned" ? "selected" : ""; ?>>Returned</option></select></label>
             </div>
-            <div class="form-actions"><input type="submit" value="Save placement"><button type="button" class="btn-light" onclick="document.getElementById('placementForm').hidden=true;">Cancel</button></div>
+            <div class="form-actions"><input type="submit" value="Save placement"><?php if($selectedApplicationId > 0){ ?><a class="btn-light" href="applications.php">Cancel</a><?php }else{ ?><button type="button" class="btn-light" onclick="document.getElementById('placementForm').hidden=true;">Cancel</button><?php } ?></div>
         </form>
 
         <section class="stats">

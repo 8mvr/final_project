@@ -132,6 +132,54 @@ class Placement
     {
         $this->conn->beginTransaction();
         try{
+            if($adoptionid){
+                $application = $this->conn->prepare(
+                    "SELECT petid, status FROM adoption WHERE adoptionid=? FOR UPDATE"
+                );
+                $application->execute([$adoptionid]);
+                $applicationRow = $application->fetch(PDO::FETCH_ASSOC);
+                if(
+                    !$applicationRow
+                    || (int)$applicationRow["petid"] !== (int)$petid
+                    || !in_array(strtolower(trim($applicationRow["status"] ?? "")), ["pending", "approved"], true)
+                ){
+                    throw new \RuntimeException("The adoption application is no longer available for placement.");
+                }
+                $existingPlacement = $this->conn->prepare("SELECT placementid FROM placement WHERE adoptionid=? LIMIT 1");
+                $existingPlacement->execute([$adoptionid]);
+                if($existingPlacement->fetchColumn()){
+                    throw new \RuntimeException("A placement already exists for this application.");
+                }
+                $approve = $this->conn->prepare(
+                    "UPDATE adoption SET status='Approved', reviewed_by=? WHERE adoptionid=?"
+                );
+                $approve->execute([$recorded_by, $adoptionid]);
+                $this->conn->prepare("UPDATE pet SET status='Not Available' WHERE petid=?")->execute([$petid]);
+            }elseif($fosterid){
+                $application = $this->conn->prepare(
+                    "SELECT petid, status FROM foster WHERE fosterid=? FOR UPDATE"
+                );
+                $application->execute([$fosterid]);
+                $applicationRow = $application->fetch(PDO::FETCH_ASSOC);
+                if(
+                    !$applicationRow
+                    || (int)$applicationRow["petid"] !== (int)$petid
+                    || !in_array(strtolower(trim($applicationRow["status"] ?? "")), ["pending", "approved"], true)
+                ){
+                    throw new \RuntimeException("The foster application is no longer available for placement.");
+                }
+                $existingPlacement = $this->conn->prepare("SELECT placementid FROM placement WHERE fosterid=? LIMIT 1");
+                $existingPlacement->execute([$fosterid]);
+                if($existingPlacement->fetchColumn()){
+                    throw new \RuntimeException("A placement already exists for this application.");
+                }
+                $approve = $this->conn->prepare(
+                    "UPDATE foster SET status='Approved', reviewed_by=? WHERE fosterid=?"
+                );
+                $approve->execute([$recorded_by, $fosterid]);
+                $this->conn->prepare("UPDATE pet SET status='Foster' WHERE petid=?")->execute([$petid]);
+            }
+
             $sql = "INSERT INTO placement(userid,petid,adoptionid,fosterid,recorded_by,placementtype,start_date,end_date,status)
                     VALUES (?,?,?,?,?,?,?,?,?)";
             $stmt = $this->conn->prepare($sql);
