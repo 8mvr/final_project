@@ -154,7 +154,6 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
                 <h1>Placement records</h1>
                 <p>Every adoption and foster placement, with follow-up dates.</p>
             </div>
-            <button class="btn-dark" type="button" onclick="document.getElementById('placementForm').hidden=false;document.getElementById('placementForm').scrollIntoView({behavior:'smooth'});">Record placement</button>
         </header>
 
         <?php if($message !== ""){ ?><p class="okmsg"><?php echo e($message); ?></p><?php } ?>
@@ -177,10 +176,10 @@ $active = count(array_filter($placements, fn($p) => strcasecmp((string)$p["statu
         </form>
 
         <section class="placement-stats">
-            <div class="placement-stat"><span>Total placements</span><b><?php echo $totalPlacements; ?></b><small>Adoption and foster records</small></div>
-            <div class="placement-stat"><span>Active placements</span><b><?php echo $active; ?></b><small>Adoptions and foster placements</small></div>
-            <div class="placement-stat"><span>Follow-ups due this week</span><b>0</b><small>No follow-up dates recorded</small></div>
-            <div class="placement-stat"><span>Completed placements</span><b><?php echo count(array_filter($placements, fn($p) => strcasecmp((string)$p["status"], "Completed") === 0)); ?></b><small><?php echo $adoptions; ?> adoption records</small></div>
+            <div class="placement-stat"><span>Total placements</span><b><?php echo $totalPlacements; ?></b></div>
+            <div class="placement-stat"><span>Active placements</span><b><?php echo $active; ?></b></div>
+            <div class="placement-stat"><span>Follow-ups due this week</span><b>0</b></div>
+            <div class="placement-stat"><span>Completed placements</span><b><?php echo count(array_filter($placements, fn($p) => strcasecmp((string)$p["status"], "Completed") === 0)); ?></b></div>
         </section>
 
         <section class="card placements-card">
