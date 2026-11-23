@@ -346,12 +346,11 @@ td strong { color: #233b32; }
 /* ---------- Responsive ---------- */
 .users-main { width: 100%; max-width: none; }
 .users-main .top { margin-bottom: 8px; }
+.users-main .users-stats { grid-template-columns: repeat(3, 1fr); }
 .users-card {
     width: 100%;
     max-width: 100%;
-    padding: 0;
-    border: 0;
-    background: transparent;
+    padding: 20px;
 }
 .users-toolbar {
     width: 100%;
@@ -361,7 +360,7 @@ td strong { color: #233b32; }
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
-    margin: 0 0 12px;
+    margin: 0 0 14px;
     padding: 0;
     background: transparent;
     border: 0;
@@ -375,7 +374,7 @@ td strong { color: #233b32; }
     width: 100%;
     height: 38px;
     padding: 8px 10px;
-    border: 1px solid black;
+    border: 1px solid #dddfd5;
     border-radius: 8px;
     background: #fffefa;
     color: #233b32;
@@ -387,17 +386,24 @@ td strong { color: #233b32; }
 }
 .users-table {
     width: 100%;
-    min-width: 0;
+    min-width: 640px;
     table-layout: fixed;
 }
 .users-table th {
-    background: #eef1e8;
-    text-align: center;
+    background: #eef0e6;
+    text-align: left;
 }
 .users-table td {
-    text-align: center;
     font-family: Arial, sans-serif;
     font-weight: 400;
+}
+.users-table td:nth-child(2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.users-table th:last-child,
+.users-table td:last-child {
+    text-align: center;
 }
 .users-table td strong {
     font-family: Arial, sans-serif;
@@ -464,9 +470,10 @@ td strong { color: #233b32; }
     .users-table-wrap {
         width: 100%;
     }
+    .users-main .users-stats { grid-template-columns: 1fr; }
     .users-table {
         width: 100%;
-        min-width: 0;
+        min-width: 640px;
         table-layout: fixed;
     }
     .users-toolbar { width: 100%; align-items: stretch; flex-direction: row; }

@@ -37,6 +37,20 @@ $filteredUsers = array_values(array_filter($users, function($user) use ($q){
     return $q === "" || str_contains($haystack, strtolower($q));
 }));
 
+$fullName = $_SESSION["email"];
+$counts = ["total" => count($users), "admin" => 0, "user" => 0];
+foreach($users as $user){
+    if(strcasecmp($user["email"], $_SESSION["email"]) === 0){
+        $fullName = $user["full_name"] ?: $_SESSION["email"];
+    }
+
+    $role = strtolower(trim($user["role"]));
+    $counts[in_array($role, ["admin", "user"], true) ? $role : "user"]++;
+}
+$firstName = explode(" ", trim($fullName))[0];
+$hour = (int)date("G");
+$greeting = $hour < 12 ? "Good morning" : ($hour < 18 ? "Good afternoon" : "Good evening");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +67,7 @@ $filteredUsers = array_values(array_filter($users, function($user) use ($q){
     <main class="main users-main">
         <header class="top">
             <div>
-                <h1>User management</h1>
+                <h1><?php echo e($greeting); ?>, <?php echo e(strtoupper($firstName)); ?></h1>
             </div>
         </header>
 
@@ -61,7 +75,17 @@ $filteredUsers = array_values(array_filter($users, function($user) use ($q){
         <?php if(isset($_GET["err"])){ ?><p class="notice"><?php echo e($_GET["err"]); ?></p><?php } ?>
         <?php if($message !== ""){ ?><p class="<?php echo e($messageType); ?>"><?php echo e($message); ?></p><?php } ?>
 
+        <section class="stats users-stats" aria-label="User account summary">
+            <div class="stat"><span>Total users</span><b><?php echo $counts["total"]; ?></b></div>
+            <div class="stat"><span>Administrators</span><b><?php echo $counts["admin"]; ?></b></div>
+            <div class="stat"><span>Regular users</span><b><?php echo $counts["user"]; ?></b></div>
+        </section>
+
         <section class="card users-card">
+            <div class="card-head">
+                <h2>Manage all users</h2>
+            </div>
+
             <form class="users-toolbar" method="GET">
                 <label class="users-search">
                     <span class="sr-only">Search by name or email</span>
@@ -71,7 +95,7 @@ $filteredUsers = array_values(array_filter($users, function($user) use ($q){
             </form>
 
             <div class="table-wrap users-table-wrap">
-                <table class="users-table">
+                <table class="admin-table users-table">
                     <thead>
                         <tr>
                             <th>User</th>

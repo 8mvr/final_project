@@ -39,9 +39,6 @@ $sex = in_array($sexInput, ["all", "female", "male"], true) ? $sexInput : "all";
 $qLow = mb_strtolower($q);
 $pets = array_values(array_filter($pets, function($pet) use ($qLow, $avail, $age, $sex) {
     $status = strtolower(trim($pet["status"]));
-    if(in_array($status, ["not available", "foster"], true)){
-        return false;
-    }
     $isAvailable = $status === "available";
     $petAge = (int)$pet["age"];
     $petAgeGroup = $petAge < 1 ? "under1" : ($petAge <= 5 ? "1-5" : "6plus");
@@ -117,7 +114,7 @@ $total=count($pets);
                         <input type="hidden" name="sex" value="<?php echo e($sex) ?>">
                         <button type="submit" name="avail" value="all" class="check filter-choice"><span class="box<?php echo $avail === "all" ? " active" : "" ?>"></span>All pets</button>
                         <button type="submit" name="avail" value="yes" class="check filter-choice"><span class="box<?php echo $avail === "yes" ? " active" : "" ?>"></span>Available</button>
-                        <button type="submit" name="avail" value="no" class="check filter-choice"><span class="box<?php echo $avail === "no" ? " active" : "" ?>"></span>Not available</button>
+                        <button type="submit" name="avail" value="no" class="check filter-choice"><span class="box<?php echo $avail === "no" ? " active" : "" ?>"></span>Foster</button>
                     </form>
                 </fieldset>
 
@@ -154,6 +151,7 @@ $total=count($pets);
                         $src=photo_src($pet["photo_url"]);
                         $status=strtolower(trim($pet["status"]));
                         $isAvailable=($status==="available");
+                        $statusLabel=$status==="foster" ? "Foster" : ($isAvailable ? "Available" : "Not available");
                         $search=strtolower($pet["name"]." ".$pet["breed"]." ".$pet["species"]);
                     ?>
                     <article class="card"
@@ -172,7 +170,7 @@ $total=count($pets);
                             <div class="card-body">
                                 <div class="card-top">
                                     <h3><?php echo e($pet["name"]) ?></h3>
-                                    <span class="pill <?php echo $isAvailable ? "" : "pill-foster" ?>"><?php echo $isAvailable ? "Available" : "Not available" ?></span>
+                                    <span class="pill <?php echo $isAvailable ? "" : "pill-foster" ?>"><?php echo e($statusLabel) ?></span>
                                 </div>
                                 <p class="meta"><?php echo e($pet["breed"]) ?> &middot; <?php echo e(age_label($pet["age"])) ?> &middot; <?php echo e($pet["sex"]) ?></p>
                                 <p class="desc"><?php echo e($pet["description"]) ?></p>
