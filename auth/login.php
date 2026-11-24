@@ -43,7 +43,7 @@ if(isset($_POST["submit"])){
             <input type="password" name="password" required>
 
             <input type="submit" name="submit" value="LogIn">
-            <p class="signup-link">Don't have an account? <a href="signup.php">SignUp</a></p>
+            <p class="signup-link">Don't have an account? <a href="signup.php">Sign Up</a></p>
 
             <?php
 
