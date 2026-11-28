@@ -1,42 +1,65 @@
 <?php
-// comment
-require_once __DIR__ . '/../includes/session.php';
 
-if (!isset($_SESSION["email"])) {
-    header("Location: ../logout.php");
+session_start();
+
+if(!isset($_SESSION["email"])){
+    header("Location:../auth/logout.php");
+    exit();
+}
+if(($_SESSION["role"] ?? "")!=="admin"){
+    header("Location:dashboard.php");
     exit();
 }
 
-$isAdmin = isset($_SESSION["role"]) && in_array($_SESSION["role"], ["admin", "staff"]);
-if (!$isAdmin) {
-    header("Location: dashboard.php");
-    exit();
-}
-
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__."/../vendor/autoload.php";
+require_once __DIR__."/../includes/upload_photo.php";
 use app\Models\Pet;
 
-$petModel = new Pet();
-if (isset($_POST["update"]) || isset($_POST["save_pet"])) {
-    $id = $_POST["id"] ?? $_POST["pet_id"];
-    $name = $_POST["name"];
-    $species = $_POST["species"];
-    $breed = $_POST["breed"];
-    $age = $_POST["age"];
-    $sex = $_POST["sex"];
-    $description = $_POST["description"];
-    $photo_url = $_POST["photo_url"];
-    $status = $_POST["status"];
+$petModel=new Pet();
+if(isset($_POST["update"])){
+    $id=(int)($_POST["id"] ?? 0);
+    $name=trim($_POST["name"] ?? "");
+    $species=trim($_POST["species"] ?? "");
+    $breed=trim($_POST["breed"] ?? "");
+    $age=(int)($_POST["age"] ?? 0);
+    $sex=$_POST["sex"] ?? "Male";
+    $description=trim($_POST["description"] ?? "");
 
-    try {
-        $petModel->update($name, $species, $breed, $age, $sex, $description, $photo_url, $status, $id);
-        header("Location: dashboard.php");
+    if($id <= 0 || $name === "" || $species === ""){
+        header("Location:admin.php?err=" . urlencode("Pet name and species are required."));
         exit();
-    } catch (PDOException $e) {
+    }
+
+    try{
+        $existing=$petModel->ViewbyID($id);
+        if(!$existing){
+            header("Location:admin.php?err=" . urlencode("Pet not found."));
+            exit();
+        }
+
+        $submittedStatus=trim((string)($_POST["status"] ?? ""));
+        if($submittedStatus === ""){
+            $status=$existing["status"];
+        }else{
+            $normalizedStatus=strtolower($submittedStatus);
+            if(!in_array($normalizedStatus, ["available", "foster"], true)){
+                header("Location:admin.php?err=" . urlencode("Invalid pet status."));
+                exit();
+            }
+            $status=$normalizedStatus === "available" ? "Available" : "Foster";
+        }
+
+        // New upload replaces the photo; otherwise keep the existing one
+        $photo_url=save_uploaded_photo();
+        if($photo_url===null){
+            $photo_url=$existing["photo_url"] ?? "";
+        }
+        $petModel->update($name,$species,$breed,$age,$sex,$description,$photo_url,$status,$id);
+        header("Location:admin.php?updated=1");
+    }
+    catch(PDOException | RuntimeException $e){
         echo $e->getMessage();
     }
 }
 
-$id = $_GET['id'] ?? ($_POST['id'] ?? 1);
-header("Location: dashboard.php?edit_id=" . urlencode($id));
-exit();
+?>

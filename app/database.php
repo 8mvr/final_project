@@ -1,5 +1,4 @@
 <?php
-// comment
 
 namespace app;
 
@@ -9,7 +8,7 @@ class Database{
     private $host = "localhost";
     private $username = "root";
     private $password = "";
-    private $dbname = "finaldb";
+    private $dbname = "petadoptiondb";
 
     public function connection():PDO{
         return new PDO("mysql:host=$this->host;dbname=$this->dbname",$this->username,$this->password,[

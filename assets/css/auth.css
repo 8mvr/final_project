@@ -1,0 +1,248 @@
+/* makes width include padding and border */
+input,
+.login-container,
+.signup-container {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f6f3ee;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #233b32;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* ---------- Card ---------- */
+
+.login-container,
+.signup-container {
+    width: 100%;
+    max-width: 520px;
+    padding: 40px;
+    background: #fffefa;
+    border: 1px solid #dddfd5;
+    border-radius: 14px;
+    text-align: left;
+}
+
+.signup-container {
+    max-width: 640px;
+}
+
+/* ---------- Heading and intro text ---------- */
+
+h1 {
+    margin: 0 0 8px;
+    font-family: Georgia, serif;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.2;
+    color: #24483e;
+}
+
+.login-container > p,
+.signup-container > p {
+    margin: 0 0 22px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #6a756e;
+}
+
+/* "First Name and Last Name" helper text under the label */
+.signup-container label + p {
+    margin: 4px 0 6px;
+    font-size: 11px;
+    line-height: normal;
+    color: #6a756e;
+}
+
+/* ---------- Labels and inputs ---------- */
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #233b32;
+}
+
+label b {
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    display: block;
+    width: 100%;
+    margin: 0 0 20px;
+    padding: 13px 14px;
+    background: #fffefa;
+    border: 1px solid #dddfd5;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #233b32;
+    text-align: left;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #24483e;
+    box-shadow: 0 0 0 3px rgba(36, 72, 62, 0.12);
+}
+
+input[type="text"]:user-invalid,
+input[type="email"]:user-invalid,
+input[type="password"]:user-invalid {
+    border: 1.5px solid #b3423a;
+}
+
+input::placeholder {
+    color: #9aa39d;
+}
+
+/* ---------- Button ---------- */
+
+input[type="submit"] {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 15px 22px;
+    background-color: #24483e;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+input[type="submit"]:hover {
+    background-color: #1c3a32;
+}
+
+input[type="submit"]:focus-visible {
+    outline: 2px solid #24483e;
+    outline-offset: 2px;
+}
+
+/* ---------- Divider and switch link ---------- */
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #dddfd5;
+    margin: 22px 0;
+}
+
+.login-container > p.signup-link,
+.signup-container > p.login-link {
+    margin: 22px 0 0;
+    padding-top: 22px;
+    border-top: 1px solid #dddfd5;
+    text-align: center;
+    font-size: 13px;
+    line-height: normal;
+    color: #6a756e;
+}
+
+.signup-link a,
+.login-link a {
+    font-weight: 600;
+    color: #24483e;
+    text-decoration: none;
+}
+
+.signup-link a:hover,
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Message under the link (error / success) ---------- */
+
+.signup-link ~ p,
+.login-link ~ p {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    background: #f9e6e2;
+    border: 1px solid #e8b9b2;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+    color: #b3423a;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 600px) {
+    .login-container,
+    .signup-container {
+        padding: 28px 20px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+}
+
+/* index page: only the h1 and links sit directly in the body */
+body:has(> h1) {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+}
+
+body > h1 {
+    margin: 0 0 12px;
+    font-size: 48px;
+}
+
+body > br {
+    display: none;
+}
+
+body > a {
+    width: 220px;
+    padding: 14px 22px;
+    border-radius: 10px;
+    background: #24483e;
+    border: 1px solid #24483e;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+
+body > a:hover {
+    background: #1c3a32;
+}
+
+body > a + a {
+    background: #fffefa;
+    color: #24483e;
+    border-color: #dddfd5;
+}
+
+body > a + a:hover {
+    background: #eef1e8;
+}
